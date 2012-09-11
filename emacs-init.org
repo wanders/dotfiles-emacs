@@ -777,17 +777,16 @@ containing two files: the org-file exported to html, and the orgfile
 tangled into el.
 
 #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
-
-(defun aw-dot-emacs-export-to-git ()
-  (interactive)
-  (org-babel-tangle)
-  (let ((html (org-export-as-html 3 nil nil 'string))
-        (initel (with-temp-buffer
-                   (insert-file-contents "~/.emacs.d/init.el")
-                   (buffer-string))))
-        (aw-git-fast-import "refs/heads/export" nil "export commit" `(("emacs-init.html" . ,html)
-("init.el" . ,initel)))))
-
-
+  
+  (defun aw-dot-emacs-export-to-git ()
+    (interactive)
+    (org-babel-tangle)
+    (let ((html (org-export-as-html 3 nil nil 'string))
+          (initel (with-temp-buffer
+                    (insert-file-contents "~/.emacs.d/init.el")
+                    (buffer-string))))
+      (aw-git-fast-import "refs/heads/export" nil "export commit" `(("index.html" . ,html)
+                                                                    ("init.el" . ,initel)))))
+  
 #+END_SRC
 
