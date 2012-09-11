@@ -1,0 +1,9 @@
+This is the org file I'm using to generate my init.el file using
+org-babel.
+
+This file exported as html should be available at
+http://wanders.github.com/dotfiles-emacs/
+
+And tangled to a init.el file at:
+http://wanders.github.com/dotfiles-emacs/init.el
+
