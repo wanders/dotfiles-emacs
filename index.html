@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
 <meta name="title" content="Anders Waldenborg's emacs config"/>
 <meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2012-09-11 22:27:56 CEST"/>
+<meta name="generated" content="2012-09-11 22:45:12 CEST"/>
 <meta name="author" content="Anders Waldenborg"/>
 <meta name="description" content=""/>
 <meta name="keywords" content=""/>
@@ -1134,11 +1134,10 @@ tangled into el.
   (org-babel-tangle)
   (let ((html (org-export-as-html 3 nil nil 'string))
         (initel (with-temp-buffer
-                   (insert-file-contents "~/.emacs.d/init.el")
-                   (buffer-string))))
-        (aw-git-fast-import "refs/heads/export" nil "export commit" `(("emacs-init.html" . ,html)
-("init.el" . ,initel)))))
-
+                  (insert-file-contents "~/.emacs.d/init.el")
+                  (buffer-string))))
+    (aw-git-fast-import "refs/heads/export" nil "export commit" `(("index.html" . ,html)
+                                                                  ("init.el" . ,initel)))))
 
 </pre>
 
@@ -1149,7 +1148,7 @@ tangled into el.
 </div>
 
 <div id="postamble">
-<p class="date">Date: 2012-09-11 22:27:56 CEST</p>
+<p class="date">Date: 2012-09-11 22:45:12 CEST</p>
 <p class="author">Author: Anders Waldenborg</p>
 <p class="creator">Org version 7.8.02 with Emacs version 24</p>
 <a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>

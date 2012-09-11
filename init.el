@@ -588,7 +588,7 @@
   (org-babel-tangle)
   (let ((html (org-export-as-html 3 nil nil 'string))
         (initel (with-temp-buffer
-                   (insert-file-contents "~/.emacs.d/init.el")
-                   (buffer-string))))
-        (aw-git-fast-import "refs/heads/export" nil "export commit" `(("emacs-init.html" . ,html)
-("init.el" . ,initel)))))
+                  (insert-file-contents "~/.emacs.d/init.el")
+                  (buffer-string))))
+    (aw-git-fast-import "refs/heads/export" nil "export commit" `(("index.html" . ,html)
+                                                                  ("init.el" . ,initel)))))
