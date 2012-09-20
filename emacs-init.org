@@ -494,6 +494,22 @@ This is how I define them.
 
 #+END_SRC
 
+* shell script mode
+
+Basic setup for indentation in buffers editing shell scripts. Notice
+sh-indent-comment to allow indentation of comment (only) lines.
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
+(defun aw-setup-sh-mode ()
+  (setq tab-width 8)
+  (setq sh-indentation 8)
+  (setq sh-basic-offset 8)
+  (setq sh-indent-comment t))
+
+(add-hook 'sh-mode-hook 'aw-setup-sh-mode)
+
+#+END_SRC
+
 * uniquify
 
 #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
