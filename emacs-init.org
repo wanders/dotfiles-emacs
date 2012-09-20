@@ -658,6 +658,9 @@ sh-indent-comment to allow indentation of comment (only) lines.
 (setq ido-file-extensions-order '(".pyx" ".y" ".l" t))
 
 
+; Default is raise-frame, which most of the time is useless.
+(setq ido-default-buffer-method 'selected-window)
+
 
 (defun aw-ido-completing-read-with-default (prompt entries predicate)
   (let* ((maybedft (find-tag-default))
