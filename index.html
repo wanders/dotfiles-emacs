@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
 <meta name="title" content="Anders Waldenborg's emacs config"/>
 <meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2012-09-11 22:45:12 CEST"/>
+<meta name="generated" content="2012-09-20 22:20:20 CEST"/>
 <meta name="author" content="Anders Waldenborg"/>
 <meta name="description" content=""/>
 <meta name="keywords" content=""/>
@@ -134,18 +134,19 @@
 </ul>
 </li>
 <li><a href="#sec-7">7 c-mode</a></li>
-<li><a href="#sec-8">8 uniquify</a></li>
-<li><a href="#sec-9">9 python</a></li>
-<li><a href="#sec-10">10 ido</a></li>
-<li><a href="#sec-11">11 git</a>
+<li><a href="#sec-8">8 shell script mode</a></li>
+<li><a href="#sec-9">9 uniquify</a></li>
+<li><a href="#sec-10">10 python</a></li>
+<li><a href="#sec-11">11 ido</a></li>
+<li><a href="#sec-12">12 git</a>
 <ul>
-<li><a href="#sec-11-1">11.1 git rebase -i todo mode.</a></li>
-<li><a href="#sec-11-2">11.2 Fast import</a></li>
+<li><a href="#sec-12-1">12.1 git rebase -i todo mode.</a></li>
+<li><a href="#sec-12-2">12.2 Fast import</a></li>
 </ul>
 </li>
-<li><a href="#sec-12">12 org</a>
+<li><a href="#sec-13">13 org</a>
 <ul>
-<li><a href="#sec-12-1">12.1 init.el in org git export</a></li>
+<li><a href="#sec-13-1">13.1 init.el in org git export</a></li>
 </ul>
 </li>
 </ul>
@@ -164,9 +165,10 @@ This snippet comes from <a href="http://irreal.org/blog/?p=923">http://irreal.or
 
 
 
-<pre class="example">(package-initialize)
-(add-to-list 'package-archives
-             '("marmalade" . "http://marmalade-repo.org/packages/"))
+<pre class="example">(when (&gt;= emacs-major-version 24)
+  (package-initialize)
+  (add-to-list 'package-archives
+               '("marmalade" . "http://marmalade-repo.org/packages/")))
 </pre>
 
 
@@ -773,8 +775,35 @@ This is how I define them.
 </div>
 
 <div id="outline-container-8" class="outline-2">
-<h2 id="sec-8"><span class="section-number-2">8</span> uniquify</h2>
+<h2 id="sec-8"><span class="section-number-2">8</span> shell script mode</h2>
 <div class="outline-text-2" id="text-8">
+
+
+<p>
+Basic setup for indentation in buffers editing shell scripts. Notice
+sh-indent-comment to allow indentation of comment (only) lines.
+</p>
+
+
+
+<pre class="example">(defun aw-setup-sh-mode ()
+  (setq tab-width 8)
+  (setq sh-indentation 8)
+  (setq sh-basic-offset 8)
+  (setq sh-indent-comment t))
+
+(add-hook 'sh-mode-hook 'aw-setup-sh-mode)
+
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-9" class="outline-2">
+<h2 id="sec-9"><span class="section-number-2">9</span> uniquify</h2>
+<div class="outline-text-2" id="text-9">
 
 
 
@@ -803,9 +832,9 @@ This is how I define them.
 
 </div>
 
-<div id="outline-container-9" class="outline-2">
-<h2 id="sec-9"><span class="section-number-2">9</span> python</h2>
-<div class="outline-text-2" id="text-9">
+<div id="outline-container-10" class="outline-2">
+<h2 id="sec-10"><span class="section-number-2">10</span> python</h2>
+<div class="outline-text-2" id="text-10">
 
 
 
@@ -920,9 +949,9 @@ This is how I define them.
 
 </div>
 
-<div id="outline-container-10" class="outline-2">
-<h2 id="sec-10"><span class="section-number-2">10</span> ido</h2>
-<div class="outline-text-2" id="text-10">
+<div id="outline-container-11" class="outline-2">
+<h2 id="sec-11"><span class="section-number-2">11</span> ido</h2>
+<div class="outline-text-2" id="text-11">
 
 
 
@@ -943,6 +972,9 @@ This is how I define them.
 ; make sure .pyx/.y/.l files comes before their C file friends.
 (setq ido-file-extensions-order '(".pyx" ".y" ".l" t))
 
+
+; Default is raise-frame, which most of the time is useless.
+(setq ido-default-buffer-method 'selected-window)
 
 
 (defun aw-ido-completing-read-with-default (prompt entries predicate)
@@ -981,17 +1013,17 @@ This is how I define them.
 
 </div>
 
-<div id="outline-container-11" class="outline-2">
-<h2 id="sec-11"><span class="section-number-2">11</span> git</h2>
-<div class="outline-text-2" id="text-11">
+<div id="outline-container-12" class="outline-2">
+<h2 id="sec-12"><span class="section-number-2">12</span> git</h2>
+<div class="outline-text-2" id="text-12">
 
 
 
 </div>
 
-<div id="outline-container-11-1" class="outline-3">
-<h3 id="sec-11-1"><span class="section-number-3">11.1</span> git rebase -i todo mode.</h3>
-<div class="outline-text-3" id="text-11-1">
+<div id="outline-container-12-1" class="outline-3">
+<h3 id="sec-12-1"><span class="section-number-3">12.1</span> git rebase -i todo mode.</h3>
+<div class="outline-text-3" id="text-12-1">
 
 
 <p>
@@ -1055,9 +1087,9 @@ RET.
 
 </div>
 
-<div id="outline-container-11-2" class="outline-3">
-<h3 id="sec-11-2"><span class="section-number-3">11.2</span> Fast import</h3>
-<div class="outline-text-3" id="text-11-2">
+<div id="outline-container-12-2" class="outline-3">
+<h3 id="sec-12-2"><span class="section-number-3">12.2</span> Fast import</h3>
+<div class="outline-text-3" id="text-12-2">
 
 
 
@@ -1098,9 +1130,9 @@ RET.
 
 </div>
 
-<div id="outline-container-12" class="outline-2">
-<h2 id="sec-12"><span class="section-number-2">12</span> org</h2>
-<div class="outline-text-2" id="text-12">
+<div id="outline-container-13" class="outline-2">
+<h2 id="sec-13"><span class="section-number-2">13</span> org</h2>
+<div class="outline-text-2" id="text-13">
 
 
 
@@ -1115,9 +1147,9 @@ RET.
 
 </div>
 
-<div id="outline-container-12-1" class="outline-3">
-<h3 id="sec-12-1"><span class="section-number-3">12.1</span> init.el in org git export</h3>
-<div class="outline-text-3" id="text-12-1">
+<div id="outline-container-13-1" class="outline-3">
+<h3 id="sec-13-1"><span class="section-number-3">13.1</span> init.el in org git export</h3>
+<div class="outline-text-3" id="text-13-1">
 
 
 <p>
@@ -1148,7 +1180,7 @@ tangled into el.
 </div>
 
 <div id="postamble">
-<p class="date">Date: 2012-09-11 22:45:12 CEST</p>
+<p class="date">Date: 2012-09-20 22:20:20 CEST</p>
 <p class="author">Author: Anders Waldenborg</p>
 <p class="creator">Org version 7.8.02 with Emacs version 24</p>
 <a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>

@@ -1,9 +1,10 @@
 
 ;; THIS FILE IS TANGLED FROM AN ORG FILE! DO NOT EDIT!
 
-(package-initialize)
-(add-to-list 'package-archives
-             '("marmalade" . "http://marmalade-repo.org/packages/"))
+(when (>= emacs-major-version 24)
+  (package-initialize)
+  (add-to-list 'package-archives
+               '("marmalade" . "http://marmalade-repo.org/packages/")))
 
 (blink-cursor-mode 0)
 
@@ -350,6 +351,14 @@
 ; enable flyspell in C sources.
 (add-hook 'c-mode-hook 'flyspell-prog-mode t)
 
+(defun aw-setup-sh-mode ()
+  (setq tab-width 8)
+  (setq sh-indentation 8)
+  (setq sh-basic-offset 8)
+  (setq sh-indent-comment t))
+
+(add-hook 'sh-mode-hook 'aw-setup-sh-mode)
+
 (require 'uniquify)
 
 ; server/src/foo.c client/src/foo.c
@@ -477,6 +486,9 @@
 ; make sure .pyx/.y/.l files comes before their C file friends.
 (setq ido-file-extensions-order '(".pyx" ".y" ".l" t))
 
+
+; Default is raise-frame, which most of the time is useless.
+(setq ido-default-buffer-method 'selected-window)
 
 
 (defun aw-ido-completing-read-with-default (prompt entries predicate)
