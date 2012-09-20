@@ -26,9 +26,10 @@ Initialize package system and add the marmalade package repository.
 This snippet comes from http://irreal.org/blog/?p=923
 
 #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
-(package-initialize)
-(add-to-list 'package-archives
-             '("marmalade" . "http://marmalade-repo.org/packages/"))
+(when (>= emacs-major-version 24)
+  (package-initialize)
+  (add-to-list 'package-archives
+               '("marmalade" . "http://marmalade-repo.org/packages/")))
 #+END_SRC
 
 * Appearance
