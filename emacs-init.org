@@ -551,7 +551,7 @@ sh-indent-comment to allow indentation of comment (only) lines.
 (require 'align)
 (add-to-list 'align-rules-list '(python-dict
 				 (regexp . ":\\(\\s-*\\)[^#\t\n ]")
-				 (modes . (python-mode))))
+				 (modes . '(python-mode))))
 
 
 
