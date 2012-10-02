@@ -5,17 +5,6 @@
 #+TITLE: Anders Waldenborg's emacs config
 
 
-#+BEGIN_SRC emacs-lisp :tangle no :export none :results output silent
-
-; This adds a hooks than does byte compilations after tangle is done.
-
-(defun aw-dot-emacs-post-tangle ()
-  (byte-compile-file (buffer-file-name)))
-
-(add-hook 'org-babel-post-tangle-hook 'aw-dot-emacs-post-tangle)
-
-#+END_SRC
-
 #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el :exports none
 ;; THIS FILE IS TANGLED FROM AN ORG FILE! DO NOT EDIT!
 #+END_SRC
@@ -789,6 +778,17 @@ RET.
 (add-hook 'org-mode-hook 'flyspell-prog-mode t)
 #+END_SRC
 
+** Auto byte compile after tangling to .el file
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
+  (defun aw-el-byte-compile-post-tangle ()
+    (let ((fn (buffer-file-name)))
+      (when (and fn (string-match-p "\\.el$" fn))
+        (byte-compile-file fn))))
+  
+  (add-hook 'org-babel-post-tangle-hook 'aw-el-byte-compile-post-tangle)
+  
+#+END_SRC
 
 ** init.el in org git export
 
@@ -796,8 +796,8 @@ aw-dot-emacs-export-to-git creates a new commit on the export branch,
 containing two files: the org-file exported to html, and the orgfile
 tangled into el.
 
+
 #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
-  
   (defun aw-dot-emacs-export-to-git ()
     (interactive)
     (org-babel-tangle)
