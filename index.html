@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
 <meta name="title" content="Anders Waldenborg's emacs config"/>
 <meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2012-09-20 22:20:20 CEST"/>
+<meta name="generated" content="2012-10-04 22:09:45 CEST"/>
 <meta name="author" content="Anders Waldenborg"/>
 <meta name="description" content=""/>
 <meta name="keywords" content=""/>
@@ -98,20 +98,6 @@
 
 
 
-<pre class="example">
-; This adds a hooks than does byte compilations after tangle is done.
-
-(defun aw-dot-emacs-post-tangle ()
-  (byte-compile-file (buffer-file-name)))
-
-(add-hook 'org-babel-post-tangle-hook 'aw-dot-emacs-post-tangle)
-
-</pre>
-
-
-
-
-
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
@@ -146,7 +132,8 @@
 </li>
 <li><a href="#sec-13">13 org</a>
 <ul>
-<li><a href="#sec-13-1">13.1 init.el in org git export</a></li>
+<li><a href="#sec-13-1">13.1 Auto byte compile after tangling to .el file</a></li>
+<li><a href="#sec-13-2">13.2 init.el in org git export</a></li>
 </ul>
 </li>
 </ul>
@@ -856,7 +843,7 @@ sh-indent-comment to allow indentation of comment (only) lines.
 (require 'align)
 (add-to-list 'align-rules-list '(python-dict
                                  (regexp . ":\\(\\s-*\\)[^#\t\n ]")
-                                 (modes . (python-mode))))
+                                 (modes . '(python-mode))))
 
 
 
@@ -1120,7 +1107,7 @@ RET.
     (insert "deleteall\n")
     (aw-git-fast-import--insert-one-file filalist)
     (insert "done\n")
-    (shell-command-on-region (point-min) (point-max) "git fast-import --date-format=now --done")))
+    (shell-command-on-region (point-min) (point-max) "git fast-import --quiet --date-format=now --done")))
 
 </pre>
 
@@ -1144,12 +1131,33 @@ RET.
 
 
 
-
 </div>
 
 <div id="outline-container-13-1" class="outline-3">
-<h3 id="sec-13-1"><span class="section-number-3">13.1</span> init.el in org git export</h3>
+<h3 id="sec-13-1"><span class="section-number-3">13.1</span> Auto byte compile after tangling to .el file</h3>
 <div class="outline-text-3" id="text-13-1">
+
+
+
+
+
+<pre class="example">(defun aw-el-byte-compile-post-tangle ()
+  (let ((fn (buffer-file-name)))
+    (when (and fn (string-match-p "\\.el$" fn))
+      (byte-compile-file fn))))
+
+(add-hook 'org-babel-post-tangle-hook 'aw-el-byte-compile-post-tangle)
+
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-13-2" class="outline-3">
+<h3 id="sec-13-2"><span class="section-number-3">13.2</span> init.el in org git export</h3>
+<div class="outline-text-3" id="text-13-2">
 
 
 <p>
@@ -1160,19 +1168,34 @@ tangled into el.
 
 
 
-<pre class="example">
-(defun aw-dot-emacs-export-to-git ()
+
+<pre class="example">(defun aw-find-tangle-dest-files ()
+  (let ((blocks (org-babel-tangle-collect-blocks))
+        res)
+    (mapcar (lambda (a)
+              (mapcar (lambda (a)
+                        (add-to-list 'res (cdr (assoc :tangle (nth 4 a)))))
+                      (cdr a)))
+            blocks)
+    res))
+
+(defun aw-get-tangle-dest-files ()
+  (mapcar (lambda (filepath)
+            (cons (file-name-nondirectory filepath)
+                  (with-temp-buffer
+                    (insert-file-contents filepath)
+                    (buffer-string))))
+          (aw-find-tangle-dest-files)))
+
+(defun aw-org-tangle-and-export-to-git-branch ()
   (interactive)
-  (org-babel-tangle)
-  (let ((html (org-export-as-html 3 nil nil 'string))
-        (initel (with-temp-buffer
-                  (insert-file-contents "~/.emacs.d/init.el")
-                  (buffer-string))))
-    (aw-git-fast-import "refs/heads/export" nil "export commit" `(("index.html" . ,html)
-                                                                  ("init.el" . ,initel)))))
-
+  (let ((tangle-dests (aw-get-tangle-dest-files)))
+    (org-babel-tangle)
+    (let ((html (org-export-as-html 3 nil nil 'string))
+          (extra-files nil))
+      (aw-git-fast-import "refs/heads/export" nil "export commit" `(("index.html" . ,html)
+                                                                    ,@tangle-dests)))))
 </pre>
-
 
 </div>
 </div>
@@ -1180,7 +1203,7 @@ tangled into el.
 </div>
 
 <div id="postamble">
-<p class="date">Date: 2012-09-20 22:20:20 CEST</p>
+<p class="date">Date: 2012-10-04 22:09:45 CEST</p>
 <p class="author">Author: Anders Waldenborg</p>
 <p class="creator">Org version 7.8.02 with Emacs version 24</p>
 <a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>

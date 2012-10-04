@@ -389,7 +389,7 @@
 (require 'align)
 (add-to-list 'align-rules-list '(python-dict
                                  (regexp . ":\\(\\s-*\\)[^#\t\n ]")
-                                 (modes . (python-mode))))
+                                 (modes . '(python-mode))))
 
 
 
@@ -590,17 +590,41 @@
     (insert "deleteall\n")
     (aw-git-fast-import--insert-one-file filalist)
     (insert "done\n")
-    (shell-command-on-region (point-min) (point-max) "git fast-import --date-format=now --done")))
+    (shell-command-on-region (point-min) (point-max) "git fast-import --quiet --date-format=now --done")))
 
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
 (add-hook 'org-mode-hook 'flyspell-prog-mode t)
 
-(defun aw-dot-emacs-export-to-git ()
+(defun aw-el-byte-compile-post-tangle ()
+  (let ((fn (buffer-file-name)))
+    (when (and fn (string-match-p "\\.el$" fn))
+      (byte-compile-file fn))))
+
+(add-hook 'org-babel-post-tangle-hook 'aw-el-byte-compile-post-tangle)
+
+(defun aw-find-tangle-dest-files ()
+  (let ((blocks (org-babel-tangle-collect-blocks))
+        res)
+    (mapcar (lambda (a)
+              (mapcar (lambda (a)
+                        (add-to-list 'res (cdr (assoc :tangle (nth 4 a)))))
+                      (cdr a)))
+            blocks)
+    res))
+
+(defun aw-get-tangle-dest-files ()
+  (mapcar (lambda (filepath)
+            (cons (file-name-nondirectory filepath)
+                  (with-temp-buffer
+                    (insert-file-contents filepath)
+                    (buffer-string))))
+          (aw-find-tangle-dest-files)))
+
+(defun aw-org-tangle-and-export-to-branch ()
   (interactive)
-  (org-babel-tangle)
-  (let ((html (org-export-as-html 3 nil nil 'string))
-        (initel (with-temp-buffer
-                  (insert-file-contents "~/.emacs.d/init.el")
-                  (buffer-string))))
-    (aw-git-fast-import "refs/heads/export" nil "export commit" `(("index.html" . ,html)
-                                                                  ("init.el" . ,initel)))))
+  (let ((tangle-dests (aw-get-tangle-dest-files)))
+    (org-babel-tangle)
+    (let ((html (org-export-as-html 3 nil nil 'string))
+          (extra-files nil))
+      (aw-git-fast-import "refs/heads/export" nil "export commit" `(("index.html" . ,html)
+                                                                    ,@tangle-dests)))))
