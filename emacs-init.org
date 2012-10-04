@@ -798,15 +798,30 @@ tangled into el.
 
 
 #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
-  (defun aw-dot-emacs-export-to-git ()
-    (interactive)
-    (org-babel-tangle)
-    (let ((html (org-export-as-html 3 nil nil 'string))
-          (initel (with-temp-buffer
-                    (insert-file-contents "~/.emacs.d/init.el")
-                    (buffer-string))))
-      (aw-git-fast-import "refs/heads/export" nil "export commit" `(("index.html" . ,html)
-                                                                    ("init.el" . ,initel)))))
+  (defun aw-find-tangle-dest-files ()
+    (let ((blocks (org-babel-tangle-collect-blocks))
+          res)
+      (mapcar (lambda (a)
+                (mapcar (lambda (a)
+                          (add-to-list 'res (cdr (assoc :tangle (nth 4 a)))))
+                        (cdr a)))
+              blocks)
+      res))
   
+  (defun aw-get-tangle-dest-files ()
+    (mapcar (lambda (filepath)
+              (cons (file-name-nondirectory filepath)
+                    (with-temp-buffer
+                      (insert-file-contents filepath)
+                      (buffer-string))))
+            (aw-find-tangle-dest-files)))
+  
+  (defun aw-org-tangle-and-export-to-git-branch ()
+    (interactive)
+    (let ((tangle-dests (aw-get-tangle-dest-files)))
+      (org-babel-tangle)
+      (let ((html (org-export-as-html 3 nil nil 'string))
+            (extra-files nil))
+        (aw-git-fast-import "refs/heads/export" nil "export commit" `(("index.html" . ,html)
+                                                                      ,@tangle-dests)))))
 #+END_SRC
-
