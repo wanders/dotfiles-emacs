@@ -767,7 +767,7 @@ RET.
     (insert "deleteall\n")
     (aw-git-fast-import--insert-one-file filalist)
     (insert "done\n")
-    (shell-command-on-region (point-min) (point-max) "git fast-import --date-format=now --done")))
+    (shell-command-on-region (point-min) (point-max) "git fast-import --quiet --date-format=now --done")))
 
 #+END_SRC
 
