@@ -602,6 +602,25 @@
 
 (add-hook 'org-babel-post-tangle-hook 'aw-el-byte-compile-post-tangle)
 
+(defun aw-org-safe-path-one-safelify (a)
+  (replace-regexp-in-string "[^a-zA-Z0-9]" "." (org-no-properties a)))
+(defun aw-org-safe-path ()
+  (let ((l (reverse (cons (org-get-heading) (reverse (org-get-outline-path))))))
+    (concat (mapconcat 'aw-org-safe-path-one-safelify l "-"))))
+(defun aw-org-set-custom-id ()
+  (org-set-property "CUSTOM_ID" (aw-org-safe-path)))
+
+(defun aw-org-set-custom-id-everywhere ()
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (while (not (eobp))
+      (outline-next-heading)
+      (unless (org-entry-get (point) "CUSTOM_ID")
+        (aw-org-set-custom-id)))))
+
+(add-hook 'org-export-preprocess-hook 'aw-org-set-custom-id-everywhere)
+
 (defun aw-find-tangle-dest-files ()
   (let ((blocks (org-babel-tangle-collect-blocks))
         res)
@@ -620,7 +639,7 @@
                     (buffer-string))))
           (aw-find-tangle-dest-files)))
 
-(defun aw-org-tangle-and-export-to-branch ()
+(defun aw-org-tangle-and-export-to-git-branch ()
   (interactive)
   (let ((tangle-dests (aw-get-tangle-dest-files)))
     (org-babel-tangle)

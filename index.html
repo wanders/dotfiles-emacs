@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
 <meta name="title" content="Anders Waldenborg's emacs config"/>
 <meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2012-10-04 22:09:45 CEST"/>
+<meta name="generated" content="2012-10-07 14:14:41 CEST"/>
 <meta name="author" content="Anders Waldenborg"/>
 <meta name="description" content=""/>
 <meta name="keywords" content=""/>
@@ -102,47 +102,48 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">1 Packages</a></li>
-<li><a href="#sec-2">2 Appearance</a>
+<li><a href="#Packages">1 Packages</a></li>
+<li><a href="#Appearance">2 Appearance</a>
 <ul>
-<li><a href="#sec-2-1">2.1 Remove stuff from the UI.</a></li>
-<li><a href="#sec-2-2">2.2 Show matching parens</a></li>
-<li><a href="#sec-2-3">2.3 Large frame</a></li>
-<li><a href="#sec-2-4">2.4 Header line</a></li>
+<li><a href="#Appearance-Remove.stuff.from.the.UI.">2.1 Remove stuff from the UI.</a></li>
+<li><a href="#Appearance-Show.matching.parens">2.2 Show matching parens</a></li>
+<li><a href="#Appearance-Large.frame">2.3 Large frame</a></li>
+<li><a href="#Appearance-Header.line">2.4 Header line</a></li>
 </ul>
 </li>
-<li><a href="#sec-3">3 yankmenu</a></li>
-<li><a href="#sec-4">4 woman</a></li>
-<li><a href="#sec-5">5 flymake</a></li>
-<li><a href="#sec-6">6 key-bindings</a>
+<li><a href="#yankmenu">3 yankmenu</a></li>
+<li><a href="#woman">4 woman</a></li>
+<li><a href="#flymake">5 flymake</a></li>
+<li><a href="#key.bindings">6 key-bindings</a>
 <ul>
-<li><a href="#sec-6-1">6.1 C-c <i>letter</i></a></li>
+<li><a href="#key.bindings-C.c..letter.">6.1 C-c <i>letter</i></a></li>
 </ul>
 </li>
-<li><a href="#sec-7">7 c-mode</a></li>
-<li><a href="#sec-8">8 shell script mode</a></li>
-<li><a href="#sec-9">9 uniquify</a></li>
-<li><a href="#sec-10">10 python</a></li>
-<li><a href="#sec-11">11 ido</a></li>
-<li><a href="#sec-12">12 git</a>
+<li><a href="#c.mode">7 c-mode</a></li>
+<li><a href="#shell.script.mode">8 shell script mode</a></li>
+<li><a href="#uniquify">9 uniquify</a></li>
+<li><a href="#python">10 python</a></li>
+<li><a href="#ido">11 ido</a></li>
+<li><a href="#git">12 git</a>
 <ul>
-<li><a href="#sec-12-1">12.1 git rebase -i todo mode.</a></li>
-<li><a href="#sec-12-2">12.2 Fast import</a></li>
+<li><a href="#git-git.rebase..i.todo.mode.">12.1 git rebase -i todo mode.</a></li>
+<li><a href="#git-Fast.import">12.2 Fast import</a></li>
 </ul>
 </li>
-<li><a href="#sec-13">13 org</a>
+<li><a href="#org">13 org</a>
 <ul>
-<li><a href="#sec-13-1">13.1 Auto byte compile after tangling to .el file</a></li>
-<li><a href="#sec-13-2">13.2 init.el in org git export</a></li>
+<li><a href="#org-Auto.byte.compile.after.tangling.to..el.file">13.1 Auto byte compile after tangling to .el file</a></li>
+<li><a href="#org-Use.the.heading.path.as.CUSTOM.ID.for.export.">13.2 Use the heading-path as CUSTOM<sub>ID</sub> for export.</a></li>
+<li><a href="#org-init.el.in.org.git.export">13.3 init.el in org git export</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-1" class="outline-2">
-<h2 id="sec-1"><span class="section-number-2">1</span> Packages</h2>
-<div class="outline-text-2" id="text-1">
+<div id="outline-container-Packages" class="outline-2">
+<h2 id="Packages"><a name="sec-1" id="sec-1"></a><span class="section-number-2">1</span> Packages</h2>
+<div class="outline-text-2" id="text-Packages">
 
 
 <p>
@@ -163,17 +164,17 @@ This snippet comes from <a href="http://irreal.org/blog/?p=923">http://irreal.or
 
 </div>
 
-<div id="outline-container-2" class="outline-2">
-<h2 id="sec-2"><span class="section-number-2">2</span> Appearance</h2>
-<div class="outline-text-2" id="text-2">
+<div id="outline-container-Appearance" class="outline-2">
+<h2 id="Appearance"><a name="sec-2" id="sec-2"></a><span class="section-number-2">2</span> Appearance</h2>
+<div class="outline-text-2" id="text-Appearance">
 
 
 
 </div>
 
-<div id="outline-container-2-1" class="outline-3">
-<h3 id="sec-2-1"><span class="section-number-3">2.1</span> Remove stuff from the UI.</h3>
-<div class="outline-text-3" id="text-2-1">
+<div id="outline-container-Appearance-Remove.stuff.from.the.UI." class="outline-3">
+<h3 id="Appearance-Remove.stuff.from.the.UI."><a name="sec-2-1" id="sec-2-1"></a><span class="section-number-3">2.1</span> Remove stuff from the UI.</h3>
+<div class="outline-text-3" id="text-Appearance-Remove.stuff.from.the.UI.">
 
 
 <p>
@@ -207,9 +208,9 @@ buffer boundaries in the left fringe.
 
 </div>
 
-<div id="outline-container-2-2" class="outline-3">
-<h3 id="sec-2-2"><span class="section-number-3">2.2</span> Show matching parens</h3>
-<div class="outline-text-3" id="text-2-2">
+<div id="outline-container-Appearance-Show.matching.parens" class="outline-3">
+<h3 id="Appearance-Show.matching.parens"><a name="sec-2-2" id="sec-2-2"></a><span class="section-number-3">2.2</span> Show matching parens</h3>
+<div class="outline-text-3" id="text-Appearance-Show.matching.parens">
 
 
 <p>
@@ -257,9 +258,9 @@ nicer.
 
 </div>
 
-<div id="outline-container-2-3" class="outline-3">
-<h3 id="sec-2-3"><span class="section-number-3">2.3</span> Large frame</h3>
-<div class="outline-text-3" id="text-2-3">
+<div id="outline-container-Appearance-Large.frame" class="outline-3">
+<h3 id="Appearance-Large.frame"><a name="sec-2-3" id="sec-2-3"></a><span class="section-number-3">2.3</span> Large frame</h3>
+<div class="outline-text-3" id="text-Appearance-Large.frame">
 
 
 
@@ -299,9 +300,9 @@ nicer.
 
 </div>
 
-<div id="outline-container-2-4" class="outline-3">
-<h3 id="sec-2-4"><span class="section-number-3">2.4</span> Header line</h3>
-<div class="outline-text-3" id="text-2-4">
+<div id="outline-container-Appearance-Header.line" class="outline-3">
+<h3 id="Appearance-Header.line"><a name="sec-2-4" id="sec-2-4"></a><span class="section-number-3">2.4</span> Header line</h3>
+<div class="outline-text-3" id="text-Appearance-Header.line">
 
 
 
@@ -324,9 +325,9 @@ nicer.
 
 </div>
 
-<div id="outline-container-3" class="outline-2">
-<h2 id="sec-3"><span class="section-number-2">3</span> yankmenu</h2>
-<div class="outline-text-2" id="text-3">
+<div id="outline-container-yankmenu" class="outline-2">
+<h2 id="yankmenu"><a name="sec-3" id="sec-3"></a><span class="section-number-2">3</span> yankmenu</h2>
+<div class="outline-text-2" id="text-yankmenu">
 
 
 
@@ -366,9 +367,9 @@ nicer.
 
 </div>
 
-<div id="outline-container-4" class="outline-2">
-<h2 id="sec-4"><span class="section-number-2">4</span> woman</h2>
-<div class="outline-text-2" id="text-4">
+<div id="outline-container-woman" class="outline-2">
+<h2 id="woman"><a name="sec-4" id="sec-4"></a><span class="section-number-2">4</span> woman</h2>
+<div class="outline-text-2" id="text-woman">
 
 
 
@@ -436,9 +437,9 @@ nicer.
 
 </div>
 
-<div id="outline-container-5" class="outline-2">
-<h2 id="sec-5"><span class="section-number-2">5</span> flymake</h2>
-<div class="outline-text-2" id="text-5">
+<div id="outline-container-flymake" class="outline-2">
+<h2 id="flymake"><a name="sec-5" id="sec-5"></a><span class="section-number-2">5</span> flymake</h2>
+<div class="outline-text-2" id="text-flymake">
 
 
 
@@ -505,9 +506,9 @@ nicer.
 
 </div>
 
-<div id="outline-container-6" class="outline-2">
-<h2 id="sec-6"><span class="section-number-2">6</span> key-bindings</h2>
-<div class="outline-text-2" id="text-6">
+<div id="outline-container-key.bindings" class="outline-2">
+<h2 id="key.bindings"><a name="sec-6" id="sec-6"></a><span class="section-number-2">6</span> key-bindings</h2>
+<div class="outline-text-2" id="text-key.bindings">
 
 
 <p>
@@ -602,9 +603,9 @@ elisp, and it is some kind of help, so stick it under C-h
 
 </div>
 
-<div id="outline-container-6-1" class="outline-3">
-<h3 id="sec-6-1"><span class="section-number-3">6.1</span> C-c <i>letter</i></h3>
-<div class="outline-text-3" id="text-6-1">
+<div id="outline-container-key.bindings-C.c..letter." class="outline-3">
+<h3 id="key.bindings-C.c..letter."><a name="sec-6-1" id="sec-6-1"></a><span class="section-number-3">6.1</span> C-c <i>letter</i></h3>
+<div class="outline-text-3" id="text-key.bindings-C.c..letter.">
 
 
 <p>
@@ -664,9 +665,9 @@ This is how I define them.
 
 </div>
 
-<div id="outline-container-7" class="outline-2">
-<h2 id="sec-7"><span class="section-number-2">7</span> c-mode</h2>
-<div class="outline-text-2" id="text-7">
+<div id="outline-container-c.mode" class="outline-2">
+<h2 id="c.mode"><a name="sec-7" id="sec-7"></a><span class="section-number-2">7</span> c-mode</h2>
+<div class="outline-text-2" id="text-c.mode">
 
 
 
@@ -761,9 +762,9 @@ This is how I define them.
 
 </div>
 
-<div id="outline-container-8" class="outline-2">
-<h2 id="sec-8"><span class="section-number-2">8</span> shell script mode</h2>
-<div class="outline-text-2" id="text-8">
+<div id="outline-container-shell.script.mode" class="outline-2">
+<h2 id="shell.script.mode"><a name="sec-8" id="sec-8"></a><span class="section-number-2">8</span> shell script mode</h2>
+<div class="outline-text-2" id="text-shell.script.mode">
 
 
 <p>
@@ -788,9 +789,9 @@ sh-indent-comment to allow indentation of comment (only) lines.
 
 </div>
 
-<div id="outline-container-9" class="outline-2">
-<h2 id="sec-9"><span class="section-number-2">9</span> uniquify</h2>
-<div class="outline-text-2" id="text-9">
+<div id="outline-container-uniquify" class="outline-2">
+<h2 id="uniquify"><a name="sec-9" id="sec-9"></a><span class="section-number-2">9</span> uniquify</h2>
+<div class="outline-text-2" id="text-uniquify">
 
 
 
@@ -819,9 +820,9 @@ sh-indent-comment to allow indentation of comment (only) lines.
 
 </div>
 
-<div id="outline-container-10" class="outline-2">
-<h2 id="sec-10"><span class="section-number-2">10</span> python</h2>
-<div class="outline-text-2" id="text-10">
+<div id="outline-container-python" class="outline-2">
+<h2 id="python"><a name="sec-10" id="sec-10"></a><span class="section-number-2">10</span> python</h2>
+<div class="outline-text-2" id="text-python">
 
 
 
@@ -936,9 +937,9 @@ sh-indent-comment to allow indentation of comment (only) lines.
 
 </div>
 
-<div id="outline-container-11" class="outline-2">
-<h2 id="sec-11"><span class="section-number-2">11</span> ido</h2>
-<div class="outline-text-2" id="text-11">
+<div id="outline-container-ido" class="outline-2">
+<h2 id="ido"><a name="sec-11" id="sec-11"></a><span class="section-number-2">11</span> ido</h2>
+<div class="outline-text-2" id="text-ido">
 
 
 
@@ -1000,17 +1001,17 @@ sh-indent-comment to allow indentation of comment (only) lines.
 
 </div>
 
-<div id="outline-container-12" class="outline-2">
-<h2 id="sec-12"><span class="section-number-2">12</span> git</h2>
-<div class="outline-text-2" id="text-12">
+<div id="outline-container-git" class="outline-2">
+<h2 id="git"><a name="sec-12" id="sec-12"></a><span class="section-number-2">12</span> git</h2>
+<div class="outline-text-2" id="text-git">
 
 
 
 </div>
 
-<div id="outline-container-12-1" class="outline-3">
-<h3 id="sec-12-1"><span class="section-number-3">12.1</span> git rebase -i todo mode.</h3>
-<div class="outline-text-3" id="text-12-1">
+<div id="outline-container-git-git.rebase..i.todo.mode." class="outline-3">
+<h3 id="git-git.rebase..i.todo.mode."><a name="sec-12-1" id="sec-12-1"></a><span class="section-number-3">12.1</span> git rebase -i todo mode.</h3>
+<div class="outline-text-3" id="text-git-git.rebase..i.todo.mode.">
 
 
 <p>
@@ -1074,9 +1075,9 @@ RET.
 
 </div>
 
-<div id="outline-container-12-2" class="outline-3">
-<h3 id="sec-12-2"><span class="section-number-3">12.2</span> Fast import</h3>
-<div class="outline-text-3" id="text-12-2">
+<div id="outline-container-git-Fast.import" class="outline-3">
+<h3 id="git-Fast.import"><a name="sec-12-2" id="sec-12-2"></a><span class="section-number-3">12.2</span> Fast import</h3>
+<div class="outline-text-3" id="text-git-Fast.import">
 
 
 
@@ -1117,9 +1118,9 @@ RET.
 
 </div>
 
-<div id="outline-container-13" class="outline-2">
-<h2 id="sec-13"><span class="section-number-2">13</span> org</h2>
-<div class="outline-text-2" id="text-13">
+<div id="outline-container-org" class="outline-2">
+<h2 id="org"><a name="sec-13" id="sec-13"></a><span class="section-number-2">13</span> org</h2>
+<div class="outline-text-2" id="text-org">
 
 
 
@@ -1133,9 +1134,9 @@ RET.
 
 </div>
 
-<div id="outline-container-13-1" class="outline-3">
-<h3 id="sec-13-1"><span class="section-number-3">13.1</span> Auto byte compile after tangling to .el file</h3>
-<div class="outline-text-3" id="text-13-1">
+<div id="outline-container-org-Auto.byte.compile.after.tangling.to..el.file" class="outline-3">
+<h3 id="org-Auto.byte.compile.after.tangling.to..el.file"><a name="sec-13-1" id="sec-13-1"></a><span class="section-number-3">13.1</span> Auto byte compile after tangling to .el file</h3>
+<div class="outline-text-3" id="text-org-Auto.byte.compile.after.tangling.to..el.file">
 
 
 
@@ -1155,13 +1156,56 @@ RET.
 
 </div>
 
-<div id="outline-container-13-2" class="outline-3">
-<h3 id="sec-13-2"><span class="section-number-3">13.2</span> init.el in org git export</h3>
-<div class="outline-text-3" id="text-13-2">
+<div id="outline-container-org-Use.the.heading.path.as.CUSTOM.ID.for.export." class="outline-3">
+<h3 id="org-Use.the.heading.path.as.CUSTOM.ID.for.export."><a name="sec-13-2" id="sec-13-2"></a><span class="section-number-3">13.2</span> Use the heading-path as CUSTOM<sub>ID</sub> for export.</h3>
+<div class="outline-text-3" id="text-org-Use.the.heading.path.as.CUSTOM.ID.for.export.">
 
 
 <p>
-aw-dot-emacs-export-to-git creates a new commit on the export branch,
+This makes anchor links be based on the heading names instead of
+numbers. Which makes them fragile in a different way :)
+</p>
+<p>
+aw-org-set-custom-id-everywhere can also be run interactivly to
+actually set CUSTOM<sub>ID</sub> in current buffer (as opposed to the temporary
+buffer used for export).
+</p>
+
+
+
+<pre class="example">(defun aw-org-safe-path-one-safelify (a)
+  (replace-regexp-in-string "[^a-zA-Z0-9]" "." (org-no-properties a)))
+(defun aw-org-safe-path ()
+  (let ((l (reverse (cons (org-get-heading) (reverse (org-get-outline-path))))))
+    (concat (mapconcat 'aw-org-safe-path-one-safelify l "-"))))
+(defun aw-org-set-custom-id ()
+  (org-set-property "CUSTOM_ID" (aw-org-safe-path)))
+
+(defun aw-org-set-custom-id-everywhere ()
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (while (not (eobp))
+      (outline-next-heading)
+      (unless (org-entry-get (point) "CUSTOM_ID")
+        (aw-org-set-custom-id)))))
+
+(add-hook 'org-export-preprocess-hook 'aw-org-set-custom-id-everywhere)
+
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-org-init.el.in.org.git.export" class="outline-3">
+<h3 id="org-init.el.in.org.git.export"><a name="sec-13-3" id="sec-13-3"></a><span class="section-number-3">13.3</span> init.el in org git export</h3>
+<div class="outline-text-3" id="text-org-init.el.in.org.git.export">
+
+
+<p>
+aw-org-tangle-and-export-to-git-branch creates a new commit on the export branch,
 containing two files: the org-file exported to html, and the orgfile
 tangled into el.
 </p>
@@ -1189,10 +1233,12 @@ tangled into el.
 
 (defun aw-org-tangle-and-export-to-git-branch ()
   (interactive)
-  (let ((tangle-dests (aw-get-tangle-dest-files)))
+  (let ((dd default-directory)
+        (tangle-dests (aw-get-tangle-dest-files)))
     (org-babel-tangle)
     (let ((html (org-export-as-html 3 nil nil 'string))
           (extra-files nil))
+      (cd dd)
       (aw-git-fast-import "refs/heads/export" nil "export commit" `(("index.html" . ,html)
                                                                     ,@tangle-dests)))))
 </pre>
@@ -1203,7 +1249,7 @@ tangled into el.
 </div>
 
 <div id="postamble">
-<p class="date">Date: 2012-10-04 22:09:45 CEST</p>
+<p class="date">Date: 2012-10-07 14:14:41 CEST</p>
 <p class="author">Author: Anders Waldenborg</p>
 <p class="creator">Org version 7.8.02 with Emacs version 24</p>
 <a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
