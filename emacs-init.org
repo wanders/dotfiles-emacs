@@ -11,14 +11,25 @@
 
 * Packages
 
-Initialize package system and add the marmalade package repository.
-This snippet comes from http://irreal.org/blog/?p=923
+Initialize package system and add the marmalade and melpa package
+repositories. This snippet comes from http://irreal.org/blog/?p=923
+
+Rumor has that it should be the very first thing in init.el, so here
+we go.
+
+On older emacs (but probably only works on emacs 23) it tries to load
+package.el from .emacs.d. The last version that works on emacs23
+should be:
+http://git.savannah.gnu.org/cgit/emacs.git/plain/lisp/emacs-lisp/package.el?id=1a0a666f941c99882093d7bd08ced15033bc3f0c
 
 #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
-(when (>= emacs-major-version 24)
-  (package-initialize)
-  (add-to-list 'package-archives
-               '("marmalade" . "http://marmalade-repo.org/packages/")))
+  (when (or (>= emacs-major-version 24)
+            (load (locate-user-emacs-file "package.el") t))
+    (package-initialize)
+    (add-to-list 'package-archives
+                 '("marmalade" . "http://marmalade-repo.org/packages/"))
+    (add-to-list 'package-archives
+                 '("melpa" . "http://melpa.milkbox.net/packages/")))
 #+END_SRC
 
 * Appearance
