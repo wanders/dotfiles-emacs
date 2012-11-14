@@ -693,6 +693,18 @@ sh-indent-comment to allow indentation of comment (only) lines.
 
 #+END_SRC
 
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
+
+(defun aw-ido-ucs-insert ()
+  (interactive)
+  (ucs-insert (cdr (assoc-string (ido-completing-read "Insert: "
+                                                      (all-completions "" (ucs-names))
+                                                      nil
+                                                      t)
+                                 (ucs-names)))))
+
+#+END_SRC
+
 * git
 
 ** git rebase -i todo mode.
