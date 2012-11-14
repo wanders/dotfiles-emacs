@@ -1,10 +1,13 @@
 
 ;; THIS FILE IS TANGLED FROM AN ORG FILE! DO NOT EDIT!
 
-(when (>= emacs-major-version 24)
+(when (or (>= emacs-major-version 24)
+          (load (locate-user-emacs-file "package.el") t))
   (package-initialize)
   (add-to-list 'package-archives
-               '("marmalade" . "http://marmalade-repo.org/packages/")))
+               '("marmalade" . "http://marmalade-repo.org/packages/"))
+  (add-to-list 'package-archives
+               '("melpa" . "http://melpa.milkbox.net/packages/")))
 
 (blink-cursor-mode 0)
 
@@ -520,6 +523,14 @@
   (let ((imenu-auto-rescan t))
     (imenu (aw-ido-completing-read-with-default "Index item: " (imenu--make-index-alist) 'aw-imenu-entry-valid-p))))
 
+(defun aw-ido-ucs-insert ()
+  (interactive)
+  (ucs-insert (cdr (assoc-string (ido-completing-read "Insert: "
+                                                      (all-completions "" (ucs-names))
+                                                      nil
+                                                      t)
+                                 (ucs-names)))))
+
 (defun aw-git-rebase-todo-change-action ()
   ""
   (interactive)
@@ -641,9 +652,11 @@
 
 (defun aw-org-tangle-and-export-to-git-branch ()
   (interactive)
-  (let ((tangle-dests (aw-get-tangle-dest-files)))
+  (let ((dd default-directory)
+        (tangle-dests (aw-get-tangle-dest-files)))
     (org-babel-tangle)
     (let ((html (org-export-as-html 3 nil nil 'string))
           (extra-files nil))
+      (cd dd)
       (aw-git-fast-import "refs/heads/export" nil "export commit" `(("index.html" . ,html)
                                                                     ,@tangle-dests)))))

@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
 <meta name="title" content="Anders Waldenborg's emacs config"/>
 <meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2012-10-07 14:14:41 CEST"/>
+<meta name="generated" content="2012-11-14 21:54:23 CET"/>
 <meta name="author" content="Anders Waldenborg"/>
 <meta name="description" content=""/>
 <meta name="keywords" content=""/>
@@ -147,16 +147,29 @@
 
 
 <p>
-Initialize package system and add the marmalade package repository.
-This snippet comes from <a href="http://irreal.org/blog/?p=923">http://irreal.org/blog/?p=923</a>
+Initialize package system and add the marmalade and melpa package
+repositories. This snippet comes from <a href="http://irreal.org/blog/?p=923">http://irreal.org/blog/?p=923</a>
+</p>
+<p>
+Rumor has that it should be the very first thing in init.el, so here
+we go.
+</p>
+<p>
+On older emacs (but probably only works on emacs 23) it tries to load
+package.el from .emacs.d. The last version that works on emacs23
+should be:
+<a href="http://git.savannah.gnu.org/cgit/emacs.git/plain/lisp/emacs-lisp/package.el?id=1a0a666f941c99882093d7bd08ced15033bc3f0c">http://git.savannah.gnu.org/cgit/emacs.git/plain/lisp/emacs-lisp/package.el?id=1a0a666f941c99882093d7bd08ced15033bc3f0c</a>
 </p>
 
 
 
-<pre class="example">(when (&gt;= emacs-major-version 24)
+<pre class="example">(when (or (&gt;= emacs-major-version 24)
+          (load (locate-user-emacs-file "package.el") t))
   (package-initialize)
   (add-to-list 'package-archives
-               '("marmalade" . "http://marmalade-repo.org/packages/")))
+               '("marmalade" . "http://marmalade-repo.org/packages/"))
+  (add-to-list 'package-archives
+               '("melpa" . "http://melpa.milkbox.net/packages/")))
 </pre>
 
 
@@ -997,6 +1010,19 @@ sh-indent-comment to allow indentation of comment (only) lines.
 </pre>
 
 
+
+<pre class="example">
+(defun aw-ido-ucs-insert ()
+  (interactive)
+  (ucs-insert (cdr (assoc-string (ido-completing-read "Insert: "
+                                                      (all-completions "" (ucs-names))
+                                                      nil
+                                                      t)
+                                 (ucs-names)))))
+
+</pre>
+
+
 </div>
 
 </div>
@@ -1249,9 +1275,9 @@ tangled into el.
 </div>
 
 <div id="postamble">
-<p class="date">Date: 2012-10-07 14:14:41 CEST</p>
+<p class="date">Date: 2012-11-14 21:54:23 CET</p>
 <p class="author">Author: Anders Waldenborg</p>
-<p class="creator">Org version 7.8.02 with Emacs version 24</p>
+<p class="creator">Org version 7.8.11 with Emacs version 24</p>
 <a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
 
 </div>
