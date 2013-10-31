@@ -510,6 +510,22 @@ This is how I define them.
 
 #+END_SRC
 
+* flyspell
+
+Make flyspell use wave underlines in emacs 24.3+.
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
+(eval-after-load 'flyspell
+  '(when (or (> emacs-major-version 24)
+            (and (= emacs-major-version 24) (>= emacs-minor-version 3)))
+    (set-face-attribute 'flyspell-incorrect nil
+                        :inherit nil
+                        :underline '(:color "#cc0000" :style wave))
+    (set-face-attribute 'flyspell-duplicate nil
+                        :inherit nil
+                        :underline '(:color "#00cc00" :style wave))))
+#+END_SRC
+
 * shell script mode
 
 Basic setup for indentation in buffers editing shell scripts. Notice
