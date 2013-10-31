@@ -138,6 +138,21 @@ nicer.
 
 #+END_SRC
 
+** ANSI colors
+
+With white background the default ANSI colors gets a bit too
+bright. Tune them down a bit.
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
+(eval-after-load 'ansi-color
+  '(progn
+     (setq ansi-color-names-vector
+           ["black" "#600" "#060" "#660"
+            "#006" "#066" "#606" "white"])
+     (setq ansi-color-map (ansi-color-make-color-map))))
+#+END_SRC
+
+
 * yankmenu
 #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
 
