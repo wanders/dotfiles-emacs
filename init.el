@@ -71,6 +71,13 @@
                 (flymake-mode (" " (:eval (aw-flymake-get-err))))
                 ))
 
+(eval-after-load 'ansi-color
+  '(progn
+     (setq ansi-color-names-vector
+           ["black" "#600" "#060" "#660"
+            "#006" "#066" "#606" "white"])
+     (setq ansi-color-map (ansi-color-make-color-map))))
+
 ;;
 ;; store symbol at point to killring
 ;;
@@ -354,6 +361,16 @@
 ; enable flyspell in C sources.
 (add-hook 'c-mode-hook 'flyspell-prog-mode t)
 
+(eval-after-load 'flyspell
+  '(when (or (> emacs-major-version 24)
+            (and (= emacs-major-version 24) (>= emacs-minor-version 3)))
+    (set-face-attribute 'flyspell-incorrect nil
+                        :inherit nil
+                        :underline '(:color "#cc0000" :style wave))
+    (set-face-attribute 'flyspell-duplicate nil
+                        :inherit nil
+                        :underline '(:color "#00cc00" :style wave))))
+
 (defun aw-setup-sh-mode ()
   (setq tab-width 8)
   (setq sh-indentation 8)
@@ -408,9 +425,12 @@
 
 
 (defun aw-py-docstr-p ()
-  (save-excursion
-    (and (python-beginning-of-string)
-         (looking-at "\"\"\""))))
+  (let* ((ppss (syntax-ppss))
+         (strbeg (nth 8 ppss)))
+    (when strbeg
+      (save-excursion
+        (goto-char strbeg)
+        (looking-at "\"\"\"")))))
 
 
 (defun aw-py-docstr-indent-previous-paragraph-indent-amout (start default)
@@ -429,7 +449,7 @@
 (defun aw-py-docstr-indent-amount ()
   (save-excursion
     (let* ((T (save-excursion
-                (python-beginning-of-string)
+                (goto-char (nth 8 (syntax-ppss)))
                 (cons (point) (current-column))))
            (start (car T))
            (indent (cdr T)))
@@ -655,7 +675,7 @@
   (let ((dd default-directory)
         (tangle-dests (aw-get-tangle-dest-files)))
     (org-babel-tangle)
-    (let ((html (org-export-as-html 3 nil nil 'string))
+    (let ((html (org-export-as-html 3 nil 'string))
           (extra-files nil))
       (cd dd)
       (aw-git-fast-import "refs/heads/export" nil "export commit" `(("index.html" . ,html)
