@@ -598,9 +598,12 @@ sh-indent-comment to allow indentation of comment (only) lines.
 
 
 (defun aw-py-docstr-p ()
-  (save-excursion
-    (and (python-beginning-of-string)
-	 (looking-at "\"\"\""))))
+  (let* ((ppss (syntax-ppss))
+	 (strbeg (nth 8 ppss)))
+    (when strbeg
+      (save-excursion
+	(goto-char strbeg)
+	(looking-at "\"\"\"")))))
 
 
 (defun aw-py-docstr-indent-previous-paragraph-indent-amout (start default)
@@ -619,7 +622,7 @@ sh-indent-comment to allow indentation of comment (only) lines.
 (defun aw-py-docstr-indent-amount ()
   (save-excursion
     (let* ((T (save-excursion
-		(python-beginning-of-string)
+		(goto-char (nth 8 (syntax-ppss)))
 		(cons (point) (current-column))))
 	   (start (car T))
 	   (indent (cdr T)))
