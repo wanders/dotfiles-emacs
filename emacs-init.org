@@ -909,7 +909,7 @@ tangled into el.
       (let ((dd default-directory)
             (tangle-dests (aw-get-tangle-dest-files)))
         (org-babel-tangle)
-        (let ((html (org-export-as-html 3 nil nil 'string))
+        (let ((html (org-export-as-html 3 nil 'string))
               (extra-files nil))
           (cd dd)
           (aw-git-fast-import "refs/heads/export" nil "export commit" `(("index.html" . ,html)
