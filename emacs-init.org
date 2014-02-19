@@ -780,6 +780,7 @@ RET.
       (diff-mode))))
 
 (defun aw-git-rebase-todo-mode-setup ()
+  (setq truncate-lines t)
   (setq aw-git-rebase-todo-mode-keymap (make-sparse-keymap))
   (define-key aw-git-rebase-todo-mode-keymap " " 'aw-git-rebase-todo-change-action)
   (define-key aw-git-rebase-todo-mode-keymap (kbd "RET") 'aw-git-rebase-show)
