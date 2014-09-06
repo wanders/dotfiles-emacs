@@ -918,3 +918,12 @@ tangled into el.
           (aw-git-fast-import "refs/heads/export" nil "export commit" `(("index.html" . ,html)
                                                                         ,@tangle-dests)))))
 #+END_SRC
+* nxml
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
+(defun aw-setup-nxml-mode ()
+  (setq indent-tabs-mode nil)
+  (setq nxml-child-indent 4))
+
+(add-hook 'nxml-mode-hook 'aw-setup-nxml-mode)
+#+END_SRC
