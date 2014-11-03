@@ -1,13 +1,13 @@
 
 ;; THIS FILE IS TANGLED FROM AN ORG FILE! DO NOT EDIT!
 
-(when (or (>= emacs-major-version 24)
-          (load (locate-user-emacs-file "package.el") t))
-  (package-initialize)
-  (add-to-list 'package-archives
-               '("marmalade" . "http://marmalade-repo.org/packages/"))
-  (add-to-list 'package-archives
-               '("melpa" . "http://melpa.milkbox.net/packages/")))
+  (when (or (>= emacs-major-version 24)
+            (load (locate-user-emacs-file "package.el") t))
+    (package-initialize)
+    (add-to-list 'package-archives
+                 '("marmalade" . "http://marmalade-repo.org/packages/"))
+    (add-to-list 'package-archives
+                 '("melpa" . "http://melpa.milkbox.net/packages/")))
 
 (blink-cursor-mode 0)
 
@@ -58,7 +58,7 @@
     "Create a new fullscreen frame with a larger font (for pair programming/review)"
     (interactive)
     (with-selected-frame (make-frame '((name . "Emacs Largefont frame")
-                                       (window-system . x)))
+				       (window-system . x)))
       (set-frame-font "Inconsolata-16" t)
       (set-frame-parameter nil 'fullscreen 'fullboth)
       (selected-frame))))
@@ -66,10 +66,10 @@
 ;; headerline contains current function and flymake error on current line
 (which-func-mode t)
 (setq-default header-line-format
-              '(
-                (which-func-mode which-func-format)
-                (flymake-mode (" " (:eval (aw-flymake-get-err))))
-                ))
+	      '(
+		(which-func-mode which-func-format)
+		(flymake-mode (" " (:eval (aw-flymake-get-err))))
+		))
 
 (eval-after-load 'ansi-color
   '(progn
@@ -93,9 +93,9 @@
 (defun aw-popup-menu-at-point (menu)
   "Shows popup menu at current point, not where mouse pointer happens to be"
   (let* ((pos (posn-at-point))
-         (x (car (posn-x-y pos)))
-         (y (cdr (posn-x-y pos)))
-         (win (posn-window pos)))
+	 (x (car (posn-x-y pos)))
+	 (y (cdr (posn-x-y pos)))
+	 (win (posn-window pos)))
     
     (popup-menu menu (list (list x y) win))))
 
@@ -105,60 +105,62 @@
   (interactive)
   (aw-popup-menu-at-point 'yank-menu))
 
-;; Customizations for woman manual viewer
-
-(require 'woman)
-
-(setq woman-use-own-frame nil)
-
-
-;; Stuff for grabbing headers from man pages
-;;
-;; Pressing 'h' in a woman buffer grabs all #include lines and puts them in the kill ring
-;;
-(defun aw-interesting-beginning-of-line ()
-  ""
-  (save-excursion
-    (beginning-of-line)
-    (while (looking-at "[\t ]")
-      (forward-char))
-    (point)))
-
-
-(defun aw-interesting-end-of-line ()
-  ""
-  (save-excursion
-    (end-of-line)
-    (while (looking-at "[\t ]")
-      (backward-char))
-    (point)))
-
-(defun aw-current-interesting-line ()
-  ""
-  (buffer-substring-no-properties
-   (aw-interesting-beginning-of-line)
-   (aw-interesting-end-of-line)))
-
-
-(defun aw-grab-includes-from-woman ()
-  ""
-  (interactive)
-  (save-excursion
-    (goto-char (point-min))
-    (while (not (looking-at "SYNOPSIS"))
-      (forward-line))
-    (let ((s ""))
-      (while (not (looking-at "DESCRIPTION"))
-        (if (looking-at "[         ]*#include")
-            (setq s (concat s (aw-current-interesting-line) "\n")))
+  
+  ;; Customizations for woman manual viewer
+  
+  (require 'woman)
+  
+  (setq woman-use-own-frame nil)
+  
+  
+  ;; Stuff for grabbing headers from man pages
+  ;;
+  ;; Pressing 'h' in a woman buffer grabs all #include lines and puts them in the kill ring
+  ;;
+  (defun aw-interesting-beginning-of-line ()
+    ""
+    (save-excursion
+      (beginning-of-line)
+      (while (looking-at "[\t ]")
+        (forward-char))
+      (point)))
+  
+  
+  (defun aw-interesting-end-of-line ()
+    ""
+    (save-excursion
+      (end-of-line)
+      (while (looking-at "[\t ]")
+        (backward-char))
+      (point)))
+  
+  (defun aw-current-interesting-line ()
+    ""
+    (buffer-substring-no-properties
+     (aw-interesting-beginning-of-line)
+     (aw-interesting-end-of-line)))
+  
+  
+  (defun aw-grab-includes-from-woman ()
+    ""
+    (interactive)
+    (save-excursion
+      (goto-char (point-min))
+      (while (not (looking-at "SYNOPSIS"))
         (forward-line))
-      (kill-new s))))
-
-(defun aw-woman-hook ()
-  ""
-  (define-key woman-mode-map "h" 'aw-grab-includes-from-woman))
-
-(add-hook 'woman-mode-hook 'aw-woman-hook)
+      (let ((s ""))
+        (while (not (looking-at "DESCRIPTION"))
+          (if (looking-at "[         ]*#include")
+              (setq s (concat s (aw-current-interesting-line) "\n")))
+          (forward-line))
+        (kill-new s))))
+  
+  (defun aw-woman-hook ()
+    ""
+    (define-key woman-mode-map "h" 'aw-grab-includes-from-woman))
+  
+  (add-hook 'woman-mode-hook 'aw-woman-hook)
+  
 
 ;; customizations for flymake
 
@@ -173,7 +175,7 @@
 
 (defun aw-flymake-if-buffer-isnt-tramp ()
   (if (not (and (boundp 'tramp-file-name-structure)
-                (string-match (car tramp-file-name-structure) (buffer-file-name))))
+		(string-match (car tramp-file-name-structure) (buffer-file-name))))
       (flymake-mode t)))
 
 ; enables flymake mode iff buffer has a filename set,
@@ -186,7 +188,7 @@
   "Gets first error message for current line"
   (let ((fm-err (car (flymake-find-err-info flymake-err-info (flymake-current-line-no)))))
     (if fm-err
-        (flymake-ler-text (nth 0 fm-err)))))
+	(flymake-ler-text (nth 0 fm-err)))))
 
 (defun aw-flymake-display-err ()
   (interactive)
@@ -195,14 +197,14 @@
 
 (defmacro aw-flymake-add-simple (ptrn cmd)
   `(add-to-list 'flymake-allowed-file-name-masks
-                (list ,ptrn
-                      (lambda ()
-                        (let* ((temp-file (flymake-init-create-temp-buffer-copy
-                                           'flymake-create-temp-inplace))
-                               (local-file (file-relative-name 
-                                            temp-file
-                                            (file-name-directory buffer-file-name))))
-                          (list ,cmd (list local-file)))))))
+		(list ,ptrn
+		      (lambda ()
+			(let* ((temp-file (flymake-init-create-temp-buffer-copy
+					   'flymake-create-temp-inplace))
+			       (local-file (file-relative-name 
+					    temp-file
+					    (file-name-directory buffer-file-name))))
+			  (list ,cmd (list local-file)))))))
 
 
 
@@ -285,21 +287,21 @@
   ""
   (let ((plen (length prefix)))
     (and (>= (length str) plen)
-         (string-equal prefix (substring str 0 plen)))))
+	 (string-equal prefix (substring str 0 plen)))))
 
 (defun aw-as-autostyles ()
   ""
   (let (res)
     (dolist (stylename (mapcar 'car c-style-alist) res)
       (if (aw-str-isprefixp stylename "auto-")
-          (setq res (cons (substring stylename 5) res))))))
+	  (setq res (cons (substring stylename 5) res))))))
 
 (defun aw-list-str-match (lst x)
   "Return first matching entry in list of patterns"
   (if lst
       (if (string-match (car lst) x)
-          (car lst)
-        (aw-list-str-match (cdr lst) x))))
+	  (car lst)
+	(aw-list-str-match (cdr lst) x))))
 
 (defun aw-as-find-match (matches p)
   ""
@@ -310,11 +312,12 @@
 
 (defun aw-as-hook ()
   ""
-  (message (format "Looking for style for %s" (buffer-file-name)))
-  (let ((x (aw-as-find-match (aw-as-autostyles) (split-string (buffer-file-name)))))
-    (when x
-      (message "Using C style %s" x)
-      (c-set-style (concat "auto-" x)))))
+  (when (buffer-file-name)
+    (message (format "Looking for style for %s" (buffer-file-name)))
+    (let ((x (aw-as-find-match (aw-as-autostyles) (split-string (buffer-file-name)))))
+      (when x
+	(message "Using C style %s" x)
+	(c-set-style (concat "auto-" x))))))
 
 
 
@@ -324,37 +327,37 @@
   (cond
    (indent-tabs-mode
     (let ((c-basic-offset fill-column)
-          (tab-width fill-column))
+	  (tab-width fill-column))
       (c-indent-line)))
    (t (c-indent-line))))
 
 ;
 (c-add-style "aw-base"
-             '("linux"
-               (tab-width . 4)
-               (c-basic-offset . 4)
-               (c-offsets-alist . ((case-label . +)))
-               (indent-line-function . aw-c-smarttab-indent-line-function)
-               ))
+	     '("linux"
+	       (tab-width . 4)
+	       (c-basic-offset . 4)
+	       (c-offsets-alist . ((case-label . +)))
+	       (indent-line-function . aw-c-smarttab-indent-line-function)
+	       ))
 
 
 
 ;;
 
 (c-add-style "auto-packetlogic2*"
-             '("aw-base"))
+	     '("aw-base"))
 
 ; use a strange offset to catch indentation errors.
 (c-add-style "auto-xmms2*"
-             '("aw-base"
-               (tab-width . 5)
-               (c-basic-offset . 5)))
+	     '("aw-base"
+	       (tab-width . 5)
+	       (c-basic-offset . 5)))
 
 (c-add-style "auto-kernel*"
-             '("linux"))
+	     '("linux"))
 
 (c-add-style "auto-/*"
-             '("aw-base"))
+	     '("aw-base"))
 
 (add-hook 'c-mode-hook 'aw-as-hook)
 
@@ -370,6 +373,20 @@
     (set-face-attribute 'flyspell-duplicate nil
                         :inherit nil
                         :underline '(:color "#00cc00" :style wave))))
+
+(defun aw-directory-shell-buffer-name-mode-func (s)
+  (rename-buffer (format "*shell[%s]*" (abbreviate-file-name (directory-file-name default-directory))) t))
+
+(define-minor-mode aw-directory-shell-buffer-name-mode
+  ""
+  nil nil nil
+  (if aw-directory-shell-buffer-name-mode
+      (progn
+	(aw-directory-shell-buffer-name-mode-func "")
+	(add-hook 'comint-input-filter-functions 'aw-directory-shell-buffer-name-mode-func t t))
+    (remove-hook 'comint-input-filter-functions 'aw-directory-shell-buffer-name-mode-func t)))
+
+(add-hook 'shell-mode-hook '(lambda () (aw-directory-shell-buffer-name-mode 1)))
 
 (defun aw-setup-sh-mode ()
   (setq tab-width 8)
@@ -408,8 +425,8 @@
 ; }
 (require 'align)
 (add-to-list 'align-rules-list '(python-dict
-                                 (regexp . ":\\(\\s-*\\)[^#\t\n ]")
-                                 (modes . '(python-mode))))
+				 (regexp . ":\\(\\s-*\\)[^#\t\n ]")
+				 (modes . '(python-mode))))
 
 
 
@@ -426,22 +443,22 @@
 
 (defun aw-py-docstr-p ()
   (let* ((ppss (syntax-ppss))
-         (strbeg (nth 8 ppss)))
+	 (strbeg (nth 8 ppss)))
     (when strbeg
       (save-excursion
-        (goto-char strbeg)
-        (looking-at "\"\"\"")))))
+	(goto-char strbeg)
+	(looking-at "\"\"\"")))))
 
 
 (defun aw-py-docstr-indent-previous-paragraph-indent-amout (start default)
   (catch 'done
     (while (looking-at "^[[:blank:]]*$")
       (if (> (point) start)
-          (throw 'done default))
+	  (throw 'done default))
       (forward-line -1))
     (while (not (looking-at "^[[:blank:]]*$"))
       (if (> (point) start)
-          (throw 'done default))
+	  (throw 'done default))
       (forward-line -1))
     (forward-line 1)
     (throw 'done (current-indentation))))
@@ -449,30 +466,30 @@
 (defun aw-py-docstr-indent-amount ()
   (save-excursion
     (let* ((T (save-excursion
-                (goto-char (nth 8 (syntax-ppss)))
-                (cons (point) (current-column))))
-           (start (car T))
-           (indent (cdr T)))
+		(goto-char (nth 8 (syntax-ppss)))
+		(cons (point) (current-column))))
+	   (start (car T))
+	   (indent (cdr T)))
       (forward-line 0)
       (if (looking-at "^[[:blank:]]*@.+: *")
-          indent
-        (forward-line -1)
-        (cond
-         ;; first line - use same indent as multiline string itself
-         ((< (point) start) indent)
+	  indent
+	(forward-line -1)
+	(cond
+	 ;; first line - use same indent as multiline string itself
+	 ((< (point) start) indent)
 
-         ;; epydoc field - indent up to colon
-         ((looking-at "^[[:blank:]]*@.+: *")
-          (save-excursion
-            (goto-char (match-end 0))
-            (current-column)))
+	 ;; epydoc field - indent up to colon
+	 ((looking-at "^[[:blank:]]*@.+: *")
+	  (save-excursion
+	    (goto-char (match-end 0))
+	    (current-column)))
 
-         ;; blank line - find previous nonblank
-         ((looking-at "^[[:blank:]]*$")
-          (aw-py-docstr-indent-previous-paragraph-indent-amout start indent))
+	 ;; blank line - find previous nonblank
+	 ((looking-at "^[[:blank:]]*$")
+	  (aw-py-docstr-indent-previous-paragraph-indent-amout start indent))
 
-         ;; default - same as previous line
-         (t (current-indentation)))))))
+	 ;; default - same as previous line
+	 (t (current-indentation)))))))
 
 
 (defun aw-py-docstr-indent-line-function ()
@@ -484,49 +501,38 @@
   ""
   (interactive)
   (let ((paragraph-separate "[ \t\\f]*\\(@.*\\|\"\"\"[ \t\\f]*\\)?$")
-        (paragraph-start "[ \t\\f]*\\(@.*\\|\"\"\"[ \t\\f]*\\)?$"))
+	(paragraph-start "[ \t\\f]*\\(@.*\\|\"\"\"[ \t\\f]*\\)?$"))
     (python-fill-paragraph)))
 
 
 (add-hook 'python-mode-hook
-          (lambda ()
-            ;; I hope we can trust that these already are local...
-            (setq indent-line-function 'aw-py-docstr-indent-line-function)
-            (setq fill-paragraph-function 'aw-py-docstr-fill-paragraph))
-          t)
+	  (lambda ()
+	    ;; I hope we can trust that these already are local...
+	    (setq indent-line-function 'aw-py-docstr-indent-line-function)
+	    (setq fill-paragraph-function 'aw-py-docstr-fill-paragraph))
+	  t)
 
-; ido is really nice for finding files and buffer switching
-
-; Don't keep state between emacs invocations
-; (needs to be set before enabling ido-mode)
 (setq ido-save-directory-list-file nil)
-
 
 (require 'ido)
 (ido-mode t)
 
-
-; make sure .pyx/.y/.l files comes before their C file friends.
 (setq ido-file-extensions-order '(".pyx" ".y" ".l" t))
 
-
-; Default is raise-frame, which most of the time is useless.
 (setq ido-default-buffer-method 'selected-window)
-
 
 (defun aw-ido-completing-read-with-default (prompt entries predicate)
   (let* ((maybedft (find-tag-default))
-         (compl (all-completions "" entries predicate))
-         (dft (assoc-string maybedft compl)))
+	 (compl (all-completions "" entries predicate))
+	 (dft (assoc-string maybedft compl)))
     (ido-completing-read
-            prompt
-            compl
-            nil
-            t
-            nil
-            nil
-            dft)))
-
+	    prompt
+	    compl
+	    nil
+	    t
+	    nil
+	    nil
+	    dft)))
 
 (defun aw-ido-find-tag ()
   (interactive)
@@ -578,11 +584,14 @@
   (let ((sha (aw-git-rebase-get-sha)))
     (with-current-buffer (get-buffer-create "*git-rebase-todo diff*")
       (display-buffer (current-buffer) t)
-      (erase-buffer)
-      (call-process "git" nil (current-buffer) t "show" sha)
-      (diff-mode))))
+      (let ((inhibit-read-only t))
+        (erase-buffer)
+        (call-process "git" nil (current-buffer) t "show" sha)
+        (diff-mode))
+      (setq buffer-read-only t))))
 
 (defun aw-git-rebase-todo-mode-setup ()
+  (setq truncate-lines t)
   (setq aw-git-rebase-todo-mode-keymap (make-sparse-keymap))
   (define-key aw-git-rebase-todo-mode-keymap " " 'aw-git-rebase-todo-change-action)
   (define-key aw-git-rebase-todo-mode-keymap (kbd "RET") 'aw-git-rebase-show)
@@ -594,19 +603,19 @@
   nil                                        ; fontlock words
   '(".*/git-rebase-todo")                    ; mode-alist
   '(aw-git-rebase-todo-mode-setup)           ; function list
-  "git rebase -i todo list mode")            ; docstring
+  "git rebase -i todo list mode")	     ; docstring
 
 (defun aw-git-fast-import--insert-one-file (filalist)
   (let ((f (car filalist))
-        (rest (cdr filalist)))
+	(rest (cdr filalist)))
     (let ((path (car f))
-          (data (cdr f)))
+	  (data (cdr f)))
       (insert "M 100644 inline " path "\n")
       (if (bufferp data)
-          (insert "data " (number-to-string (buffer-size data)) "\n"
-                  (with-current-buffer data
-                    (buffer-string)) "\n")
-        (insert "data " (number-to-string (length data)) "\n" data "\n")))
+	  (insert "data " (number-to-string (buffer-size data)) "\n"
+		  (with-current-buffer data
+		    (buffer-string)) "\n")
+	(insert "data " (number-to-string (length data)) "\n" data "\n")))
     (when rest
       (aw-git-fast-import--insert-one-file rest))))
 
@@ -626,57 +635,75 @@
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
 (add-hook 'org-mode-hook 'flyspell-prog-mode t)
 
-(defun aw-el-byte-compile-post-tangle ()
-  (let ((fn (buffer-file-name)))
-    (when (and fn (string-match-p "\\.el$" fn))
-      (byte-compile-file fn))))
+(setq org-src-preserve-indentation t)
 
-(add-hook 'org-babel-post-tangle-hook 'aw-el-byte-compile-post-tangle)
+; maybe it is org-edit-src-content-indentation that I'm looking for
 
-(defun aw-org-safe-path-one-safelify (a)
-  (replace-regexp-in-string "[^a-zA-Z0-9]" "." (org-no-properties a)))
-(defun aw-org-safe-path ()
-  (let ((l (reverse (cons (org-get-heading) (reverse (org-get-outline-path))))))
-    (concat (mapconcat 'aw-org-safe-path-one-safelify l "-"))))
-(defun aw-org-set-custom-id ()
-  (org-set-property "CUSTOM_ID" (aw-org-safe-path)))
+(setq
+ org-babel-load-languages
+ '((sh . t)
+   (python . t)
+   (emacs-lisp . t)))
 
-(defun aw-org-set-custom-id-everywhere ()
-  (interactive)
-  (save-excursion
-    (goto-char (point-min))
-    (while (not (eobp))
-      (outline-next-heading)
-      (unless (org-entry-get (point) "CUSTOM_ID")
-        (aw-org-set-custom-id)))))
+  (defun aw-el-byte-compile-post-tangle ()
+    (let ((fn (buffer-file-name)))
+      (when (and fn (string-match-p "\\.el$" fn))
+        (byte-compile-file fn))))
+  
+  (add-hook 'org-babel-post-tangle-hook 'aw-el-byte-compile-post-tangle)
+  
 
-(add-hook 'org-export-preprocess-hook 'aw-org-set-custom-id-everywhere)
+  (defun aw-org-safe-path-one-safelify (a)
+    (replace-regexp-in-string "[^a-zA-Z0-9]" "." (org-no-properties a)))
+  (defun aw-org-safe-path ()
+    (let ((l (reverse (cons (org-get-heading) (reverse (org-get-outline-path))))))
+      (concat (mapconcat 'aw-org-safe-path-one-safelify l "-"))))
+  (defun aw-org-set-custom-id ()
+    (org-set-property "CUSTOM_ID" (aw-org-safe-path)))
+  
+  (defun aw-org-set-custom-id-everywhere (backend)
+    (interactive)
+    (save-excursion
+      (goto-char (point-min))
+      (while (not (eobp))
+        (outline-next-heading)
+        (unless (org-entry-get (point) "CUSTOM_ID")
+          (aw-org-set-custom-id)))))
 
-(defun aw-find-tangle-dest-files ()
-  (let ((blocks (org-babel-tangle-collect-blocks))
-        res)
-    (mapcar (lambda (a)
-              (mapcar (lambda (a)
-                        (add-to-list 'res (cdr (assoc :tangle (nth 4 a)))))
-                      (cdr a)))
-            blocks)
-    res))
+  (add-hook 'org-export-before-parsing-hook 'aw-org-set-custom-id-everywhere)
+  
 
-(defun aw-get-tangle-dest-files ()
-  (mapcar (lambda (filepath)
-            (cons (file-name-nondirectory filepath)
-                  (with-temp-buffer
-                    (insert-file-contents filepath)
-                    (buffer-string))))
-          (aw-find-tangle-dest-files)))
+    (defun aw-find-tangle-dest-files ()
+      (let ((blocks (org-babel-tangle-collect-blocks))
+            res)
+        (mapcar (lambda (a)
+                  (mapcar (lambda (a)
+                            (add-to-list 'res (cdr (assoc :tangle (nth 4 a)))))
+                          (cdr a)))
+                blocks)
+        res))
+    
+    (defun aw-get-tangle-dest-files ()
+      (mapcar (lambda (filepath)
+                (cons (file-name-nondirectory filepath)
+                      (with-temp-buffer
+                        (insert-file-contents filepath)
+                        (buffer-string))))
+              (aw-find-tangle-dest-files)))
+    
+    (defun aw-org-tangle-and-export-to-git-branch (&optional allow-create)
+      (interactive "P")
+      (let ((dd default-directory)
+            (tangle-dests (aw-get-tangle-dest-files)))
+        (org-babel-tangle)
+        (let ((html (org-export-as 'html))
+              (extra-files nil))
+          (cd dd)
+          (aw-git-fast-import "refs/heads/export" allow-create "export commit" `(("index.html" . ,html)
+                                                                                 ,@tangle-dests)))))
 
-(defun aw-org-tangle-and-export-to-git-branch ()
-  (interactive)
-  (let ((dd default-directory)
-        (tangle-dests (aw-get-tangle-dest-files)))
-    (org-babel-tangle)
-    (let ((html (org-export-as-html 3 nil 'string))
-          (extra-files nil))
-      (cd dd)
-      (aw-git-fast-import "refs/heads/export" nil "export commit" `(("index.html" . ,html)
-                                                                    ,@tangle-dests)))))
+(defun aw-setup-nxml-mode ()
+  (setq indent-tabs-mode nil)
+  (setq nxml-child-indent 4))
+
+(add-hook 'nxml-mode-hook 'aw-setup-nxml-mode)
