@@ -984,7 +984,7 @@ tangled into el.
       (let ((dd default-directory)
             (tangle-dests (aw-get-tangle-dest-files)))
         (org-babel-tangle)
-        (let ((html (org-export-as-html 3 nil 'string))
+        (let ((html (org-export-as 'html))
               (extra-files nil))
           (cd dd)
           (aw-git-fast-import "refs/heads/export" allow-create "export commit" `(("index.html" . ,html)
