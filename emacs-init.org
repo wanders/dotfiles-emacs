@@ -675,26 +675,46 @@ sh-indent-comment to allow indentation of comment (only) lines.
 
 * ido
 
+ido is really nice for finding files and buffer switching
+
+
+
+Don't keep state between emacs invocations
+(needs to be set before enabling ido-mode)
+
 #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
 
-; ido is really nice for finding files and buffer switching
-
-; Don't keep state between emacs invocations
-; (needs to be set before enabling ido-mode)
 (setq ido-save-directory-list-file nil)
 
+#+END_SRC
+
+Load and enable ido
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
 
 (require 'ido)
 (ido-mode t)
 
+#+END_SRC
 
-; make sure .pyx/.y/.l files comes before their C file friends.
+Make sure .pyx/.y/.l files comes before their C file friends.
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
+
 (setq ido-file-extensions-order '(".pyx" ".y" ".l" t))
 
+#+END_SRC
 
-; Default is raise-frame, which most of the time is useless.
+Default is raise-frame, which most of the time is useless.
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
+
 (setq ido-default-buffer-method 'selected-window)
 
+#+END_SRC
+
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
 
 (defun aw-ido-completing-read-with-default (prompt entries predicate)
   (let* ((maybedft (find-tag-default))
@@ -709,10 +729,19 @@ sh-indent-comment to allow indentation of comment (only) lines.
 	    nil
 	    dft)))
 
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
 
 (defun aw-ido-find-tag ()
   (interactive)
   (find-tag (aw-ido-completing-read-with-default "Tag: " (tags-lazy-completion-table) nil)))
+
+#+END_SRC
+
+
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
 
 ;; There are entries with negative indices (to force rescan), remove them.
 (defun aw-imenu-entry-valid-p (x)
