@@ -907,16 +907,16 @@ tangled into el.
                         (buffer-string))))
               (aw-find-tangle-dest-files)))
     
-    (defun aw-org-tangle-and-export-to-git-branch ()
-      (interactive)
+    (defun aw-org-tangle-and-export-to-git-branch (&optional allow-create)
+      (interactive "P")
       (let ((dd default-directory)
             (tangle-dests (aw-get-tangle-dest-files)))
         (org-babel-tangle)
         (let ((html (org-export-as-html 3 nil 'string))
               (extra-files nil))
           (cd dd)
-          (aw-git-fast-import "refs/heads/export" nil "export commit" `(("index.html" . ,html)
-                                                                        ,@tangle-dests)))))
+          (aw-git-fast-import "refs/heads/export" allow-create "export commit" `(("index.html" . ,html)
+                                                                                 ,@tangle-dests)))))
 #+END_SRC
 * nxml
 
