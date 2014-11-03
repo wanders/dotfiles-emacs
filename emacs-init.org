@@ -868,6 +868,26 @@ RET.
 (add-hook 'org-mode-hook 'flyspell-prog-mode t)
 #+END_SRC
 
+
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
+(setq org-src-preserve-indentation t)
+
+; maybe it is org-edit-src-content-indentation that I'm looking for
+
+#+END_SRC
+
+Enable evaluation with C-c C-c of python and sh in org-babel blocks
+too (in addition to the default elisp).
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
+(setq
+ org-babel-load-languages
+ '((sh . t)
+   (python . t)
+   (emacs-lisp . t)))
+#+END_SRC
+
 ** Auto byte compile after tangling to .el file
 
 #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
