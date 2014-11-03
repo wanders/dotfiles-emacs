@@ -456,11 +456,12 @@ This is how I define them.
 
 (defun aw-as-hook ()
   ""
-  (message (format "Looking for style for %s" (buffer-file-name)))
-  (let ((x (aw-as-find-match (aw-as-autostyles) (split-string (buffer-file-name)))))
-    (when x
-      (message "Using C style %s" x)
-      (c-set-style (concat "auto-" x)))))
+  (when (buffer-file-name)
+    (message (format "Looking for style for %s" (buffer-file-name)))
+    (let ((x (aw-as-find-match (aw-as-autostyles) (split-string (buffer-file-name)))))
+      (when x
+	(message "Using C style %s" x)
+	(c-set-style (concat "auto-" x))))))
 
 
 
