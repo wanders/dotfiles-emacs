@@ -910,6 +910,11 @@ too (in addition to the default elisp).
    (emacs-lisp . t)))
 #+END_SRC
 
+Syntax hilight. For exported code make sure htmlize package is installed.
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
+(setq org-src-fontify-natively t)
+#+END_SRC
+
 ** Auto byte compile after tangling to .el file
 
 #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
