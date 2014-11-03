@@ -645,6 +645,8 @@
    (python . t)
    (emacs-lisp . t)))
 
+(setq org-src-fontify-natively t)
+
   (defun aw-el-byte-compile-post-tangle ()
     (let ((fn (buffer-file-name)))
       (when (and fn (string-match-p "\\.el$" fn))
