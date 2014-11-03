@@ -527,6 +527,28 @@ Make flyspell use wave underlines in emacs 24.3+.
                         :underline '(:color "#00cc00" :style wave))))
 #+END_SRC
 
+* shell
+
+Use directory tracking to get the current directory in shell buffers
+name. The idea is to be able to easily switch to the right buffer with
+ido buffer switching.
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
+(defun aw-directory-shell-buffer-name-mode-func (s)
+  (rename-buffer (format "*shell[%s]*" (abbreviate-file-name (directory-file-name default-directory))) t))
+
+(define-minor-mode aw-directory-shell-buffer-name-mode
+  ""
+  nil nil nil
+  (if aw-directory-shell-buffer-name-mode
+      (progn
+	(aw-directory-shell-buffer-name-mode-func "")
+	(add-hook 'comint-input-filter-functions 'aw-directory-shell-buffer-name-mode-func t t))
+    (remove-hook 'comint-input-filter-functions 'aw-directory-shell-buffer-name-mode-func t)))
+
+(add-hook 'shell-mode-hook '(lambda () (aw-directory-shell-buffer-name-mode 1)))
+#+END_SRC
+
 * shell script mode
 
 Basic setup for indentation in buffers editing shell scripts. Notice
