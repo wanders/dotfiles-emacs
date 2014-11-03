@@ -940,7 +940,7 @@ buffer used for export).
   (defun aw-org-set-custom-id ()
     (org-set-property "CUSTOM_ID" (aw-org-safe-path)))
   
-  (defun aw-org-set-custom-id-everywhere ()
+  (defun aw-org-set-custom-id-everywhere (backend)
     (interactive)
     (save-excursion
       (goto-char (point-min))
@@ -948,8 +948,8 @@ buffer used for export).
         (outline-next-heading)
         (unless (org-entry-get (point) "CUSTOM_ID")
           (aw-org-set-custom-id)))))
-  
-  (add-hook 'org-export-preprocess-hook 'aw-org-set-custom-id-everywhere)
+
+  (add-hook 'org-export-before-parsing-hook 'aw-org-set-custom-id-everywhere)
   
 #+END_SRC
 
