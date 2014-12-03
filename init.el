@@ -388,6 +388,9 @@
 
 (add-hook 'shell-mode-hook '(lambda () (aw-directory-shell-buffer-name-mode 1)))
 
+(when (require 'bash-completion nil t)
+  (bash-completion-setup))
+
 (defun aw-setup-sh-mode ()
   (setq tab-width 8)
   (setq sh-indentation 8)
