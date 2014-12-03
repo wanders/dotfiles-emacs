@@ -529,6 +529,7 @@ Make flyspell use wave underlines in emacs 24.3+.
 
 * shell
 
+** Directory in buffer name
 Use directory tracking to get the current directory in shell buffers
 name. The idea is to be able to easily switch to the right buffer with
 ido buffer switching.
@@ -547,6 +548,14 @@ ido buffer switching.
     (remove-hook 'comint-input-filter-functions 'aw-directory-shell-buffer-name-mode-func t)))
 
 (add-hook 'shell-mode-hook '(lambda () (aw-directory-shell-buffer-name-mode 1)))
+#+END_SRC
+
+** Completion
+When emacs-bash-completion is installed - enable it. Available as a
+packet and here: https://github.com/szermatt/emacs-bash-completion
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
+(when (require 'bash-completion nil t)
+  (bash-completion-setup))
 #+END_SRC
 
 * shell script mode
