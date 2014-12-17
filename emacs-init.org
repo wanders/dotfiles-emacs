@@ -800,6 +800,13 @@ Default is raise-frame, which most of the time is useless.
 
 #+END_SRC
 
+* ediff
+
+vc-resolve-conflicts brings up ediff. Running a tiling window manager
+so can't have ediff do crazy stuff like open a separate frame.
+#+BEGIN_SRC
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+#+END_SRC
 * git
 
 ** git rebase -i todo mode.
