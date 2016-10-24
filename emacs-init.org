@@ -128,13 +128,18 @@ nicer.
 
 #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
 
-;; headerline contains current function and flymake error on current line
+(defun aw-flycheck-error-message-at-point ()
+  (car (delq nil
+	     (mapcar
+	      (lambda (o) (and (overlay-get o 'flycheck-overlay) (flycheck-error-message (overlay-get o 'flycheck-error))))
+	      (overlays-at (point))))))
+
+
+;; headerline contains current function and flycheck error on current line
 (which-func-mode t)
 (setq-default header-line-format
-	      '(
-		(which-func-mode which-func-format)
-		(flymake-mode (" " (:eval (aw-flymake-get-err))))
-		))
+	      '((which-func-mode which-func-format)
+		(flycheck-mode (" " (:eval (aw-flycheck-error-message-at-point))))))
 
 #+END_SRC
 
@@ -245,62 +250,11 @@ bright. Tune them down a bit.
   
 #+END_SRC
 
-* flymake
+* flycheck
 #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
 
-;; customizations for flymake
+(add-hook 'after-init-hook #'global-flycheck-mode)
 
-
-(require 'flymake)
-
-; no ugly gui warnings when flymake can't be enabled
-(setq flymake-gui-warnings-enabled nil)
-
-; some logging
-(setq flymake-log-level 0)
-
-(defun aw-flymake-if-buffer-isnt-tramp ()
-  (if (not (and (boundp 'tramp-file-name-structure)
-		(string-match (car tramp-file-name-structure) (buffer-file-name))))
-      (flymake-mode t)))
-
-; enables flymake mode iff buffer has a filename set,
-; otherwise things breaks badly for things such as emerge
-(defun aw-flymake-if-buffer-has-filename ()
-  (if (buffer-file-name)
-      (aw-flymake-if-buffer-isnt-tramp)))
-
-(defun aw-flymake-get-err ()
-  "Gets first error message for current line"
-  (let ((fm-err (car (flymake-find-err-info flymake-err-info (flymake-current-line-no)))))
-    (if fm-err
-	(flymake-ler-text (nth 0 fm-err)))))
-
-(defun aw-flymake-display-err ()
-  (interactive)
-  (let ((err (aw-flymake-get-err)))
-    (message (format "FLYMAKE: %s" err))))
-
-(defmacro aw-flymake-add-simple (ptrn cmd)
-  `(add-to-list 'flymake-allowed-file-name-masks
-		(list ,ptrn
-		      (lambda ()
-			(let* ((temp-file (flymake-init-create-temp-buffer-copy
-					   'flymake-create-temp-inplace))
-			       (local-file (file-relative-name 
-					    temp-file
-					    (file-name-directory buffer-file-name))))
-			  (list ,cmd (list local-file)))))))
-
-
-
-; enable flymake on c
-;(add-hook 'c-mode-hook 'aw-flymake-if-buffer-has-filename t)
-; enable flymake on py
-;(add-hook 'python-mode-hook 'aw-flymake-if-buffer-has-filename t)
-
-; Or lets do a global enable global enable
-(add-hook 'find-file-hook 'aw-flymake-if-buffer-has-filename)
 
 #+END_SRC
 
@@ -620,13 +574,6 @@ sh-indent-comment to allow indentation of comment (only) lines.
 
 ; some debian startup file adds pylint-python-hook that is broken on my system
 (remove-hook 'python-mode-hook 'pylint-python-hook)
-
-
-;; use pyflakes to check .py files.
-(aw-flymake-add-simple "\\.py\\'" "pyflakes")
-;; and pyrexc to check .pyx files.
-(aw-flymake-add-simple "\\.pyx\\'" "pyrexc")
-
 
 
 (defun aw-py-docstr-p ()
