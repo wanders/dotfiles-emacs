@@ -756,62 +756,25 @@ so can't have ediff do crazy stuff like open a separate frame.
 #+END_SRC
 * git
 
-** git rebase -i todo mode.
-
-Here is a simple major mode for the todo files created by "git rebase
--i". It allows changing the action with SPC and showing the diff with
-RET.
+** magit
 
 #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
-(defun aw-git-rebase-todo-change-action ()
-  ""
-  (interactive)
-  (save-excursion
-    (beginning-of-line)
-    (cond
-     ((looking-at "pick ") (replace-match "reword "))
-     ((looking-at "reword ") (replace-match "squash "))
-     ((looking-at "squash ") (replace-match "edit "))
-     ((looking-at "edit ") (replace-match "fixup "))
-     ((looking-at "fixup ") (replace-match "pick ")))))
-
-(defun aw-git-rebase-get-sha ()
-  ""
-  (interactive)
-  (save-excursion
-    (beginning-of-line)
-    (forward-word)
-    (forward-word)
-    (current-word)))
-
-
-(defun aw-git-rebase-show ()
-  (interactive)
-  (let ((sha (aw-git-rebase-get-sha)))
-    (with-current-buffer (get-buffer-create "*git-rebase-todo diff*")
-      (display-buffer (current-buffer) t)
-      (let ((inhibit-read-only t))
-        (erase-buffer)
-        (call-process "git" nil (current-buffer) t "show" sha)
-        (diff-mode))
-      (setq buffer-read-only t))))
-
-(defun aw-git-rebase-todo-mode-setup ()
-  (setq truncate-lines t)
-  (setq aw-git-rebase-todo-mode-keymap (make-sparse-keymap))
-  (define-key aw-git-rebase-todo-mode-keymap " " 'aw-git-rebase-todo-change-action)
-  (define-key aw-git-rebase-todo-mode-keymap (kbd "RET") 'aw-git-rebase-show)
-  (use-local-map aw-git-rebase-todo-mode-keymap))
-
-(define-generic-mode aw-git-rebase-todo-mode
-  '("#")                                     ; comments
-  '("pick" "reword" "squash" "edit" "fixup") ; keywords
-  nil                                        ; fontlock words
-  '(".*/git-rebase-todo")                    ; mode-alist
-  '(aw-git-rebase-todo-mode-setup)           ; function list
-  "git rebase -i todo list mode")	     ; docstring
-
+(setq magit-completing-read-function 'magit-ido-completing-read)
+(setq git-commit-summary-max-length 70)
+(setq magit-process-popup-time 0)
+(global-set-key "\C-cm" 'magit-status)
 #+END_SRC
+
+
+** running git from shell buffers
+
+Sometimes it is nice to run 'git' from with in a shell buffer.
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
+(setenv "GIT_PAGER" "")
+(setenv "GIT_EDITOR" "emacsclient")
+#+END_SRC
+
 
 
 ** Fast import
