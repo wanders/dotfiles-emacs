@@ -192,62 +192,65 @@ bright. Tune them down a bit.
 
 * woman
 #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
-  
-  ;; Customizations for woman manual viewer
-  
-  (require 'woman)
-  
-  (setq woman-use-own-frame nil)
-  
-  
-  ;; Stuff for grabbing headers from man pages
-  ;;
-  ;; Pressing 'h' in a woman buffer grabs all #include lines and puts them in the kill ring
-  ;;
-  (defun aw-interesting-beginning-of-line ()
-    ""
-    (save-excursion
-      (beginning-of-line)
-      (while (looking-at "[\t ]")
-        (forward-char))
-      (point)))
-  
-  
-  (defun aw-interesting-end-of-line ()
-    ""
-    (save-excursion
-      (end-of-line)
-      (while (looking-at "[\t ]")
-        (backward-char))
-      (point)))
-  
-  (defun aw-current-interesting-line ()
-    ""
-    (buffer-substring-no-properties
-     (aw-interesting-beginning-of-line)
-     (aw-interesting-end-of-line)))
-  
-  
-  (defun aw-grab-includes-from-woman ()
-    ""
-    (interactive)
-    (save-excursion
-      (goto-char (point-min))
-      (while (not (looking-at "SYNOPSIS"))
-        (forward-line))
-      (let ((s ""))
-        (while (not (looking-at "DESCRIPTION"))
-          (if (looking-at "[         ]*#include")
-              (setq s (concat s (aw-current-interesting-line) "\n")))
-          (forward-line))
-        (kill-new s))))
-  
-  (defun aw-woman-hook ()
-    ""
-    (define-key woman-mode-map "h" 'aw-grab-includes-from-woman))
-  
-  (add-hook 'woman-mode-hook 'aw-woman-hook)
-  
+
+;; Customizations for woman manual viewer
+
+(require 'woman)
+
+(setq woman-use-own-frame nil)
+
+
+;; Stuff for grabbing headers from man pages
+;;
+;; Pressing 'h' in a woman buffer grabs all #include lines and puts them in the kill ring
+;;
+(defun aw-interesting-beginning-of-line ()
+  ""
+  (save-excursion
+    (beginning-of-line)
+    (while (looking-at "[\t ]")
+      (forward-char))
+    (point)))
+
+
+(defun aw-interesting-end-of-line ()
+  ""
+  (save-excursion
+    (end-of-line)
+    (while (looking-at "[\t ]")
+      (backward-char))
+    (point)))
+
+(defun aw-current-interesting-line ()
+  ""
+  (buffer-substring-no-properties
+   (aw-interesting-beginning-of-line)
+   (aw-interesting-end-of-line)))
+
+
+(defun aw-grab-includes-from-woman ()
+  ""
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (while (not (looking-at "SYNOPSIS"))
+      (forward-line))
+    (let ((include-lines))
+      (while (not (looking-at "DESCRIPTION"))
+	(let ((line (aw-current-interesting-line)))
+	  (and (string-prefix-p "#include" line)
+	       (add-to-list 'include-lines line t)))
+	(forward-line))
+      (when include-lines
+	(kill-new (mapconcat 'identity include-lines "\n"))
+	(message "%d #include-lines added to killring" (length include-lines))))))
+
+(defun aw-woman-hook ()
+  ""
+  (define-key woman-mode-map "h" 'aw-grab-includes-from-woman))
+
+(add-hook 'woman-mode-hook 'aw-woman-hook)
+
 #+END_SRC
 
 * flycheck
