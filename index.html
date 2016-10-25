@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>Anders Waldenborg's emacs config</title>
-<!-- 2014-12-03 Wed 12:00 -->
+<!-- 2016-10-25 tis 21:10 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Anders Waldenborg" />
@@ -154,7 +154,7 @@ for the JavaScript code in this tag.
 </li>
 <li><a href="#yankmenu">3. yankmenu</a></li>
 <li><a href="#woman">4. woman</a></li>
-<li><a href="#flymake">5. flymake</a></li>
+<li><a href="#flycheck">5. flycheck</a></li>
 <li><a href="#key.bindings">6. key-bindings</a>
 <ul>
 <li><a href="#key.bindings-C.c..letter.">6.1. C-c <i>letter</i></a></li>
@@ -172,20 +172,22 @@ for the JavaScript code in this tag.
 <li><a href="#uniquify">11. uniquify</a></li>
 <li><a href="#python">12. python</a></li>
 <li><a href="#ido">13. ido</a></li>
-<li><a href="#git">14. git</a>
+<li><a href="#ediff">14. ediff</a></li>
+<li><a href="#git">15. git</a>
 <ul>
-<li><a href="#git-git.rebase..i.todo.mode.">14.1. git rebase -i todo mode.</a></li>
-<li><a href="#git-Fast.import">14.2. Fast import</a></li>
+<li><a href="#git-magit">15.1. magit</a></li>
+<li><a href="#git-running.git.from.shell.buffers">15.2. running git from shell buffers</a></li>
+<li><a href="#git-Fast.import">15.3. Fast import</a></li>
 </ul>
 </li>
-<li><a href="#org">15. org</a>
+<li><a href="#org">16. org</a>
 <ul>
-<li><a href="#org-Auto.byte.compile.after.tangling.to..el.file">15.1. Auto byte compile after tangling to .el file</a></li>
-<li><a href="#org-Use.the.heading.path.as.CUSTOM.ID.for.export.">15.2. Use the heading-path as CUSTOM<sub>ID</sub> for export.</a></li>
-<li><a href="#org-init.el.in.org.git.export">15.3. init.el in org git export</a></li>
+<li><a href="#org-Auto.byte.compile.after.tangling.to..el.file">16.1. Auto byte compile after tangling to .el file</a></li>
+<li><a href="#org-Use.the.heading.path.as.CUSTOM.ID.for.export.">16.2. Use the heading-path as CUSTOM<sub>ID</sub> for export.</a></li>
+<li><a href="#org-init.el.in.org.git.export">16.3. init.el in org git export</a></li>
 </ul>
 </li>
-<li><a href="#nxml">16. nxml</a></li>
+<li><a href="#nxml">17. nxml</a></li>
 </ul>
 </div>
 </div>
@@ -355,13 +357,18 @@ nicer.
 
 <div class="org-src-container">
 
-<pre class="src src-emacs-lisp">;; headerline contains current function and flymake error on current line
+<pre class="src src-emacs-lisp">(defun aw-flycheck-error-message-at-point ()
+  (car (delq nil
+	     (mapcar
+	      (lambda (o) (and (overlay-get o 'flycheck-overlay) (flycheck-error-message (overlay-get o 'flycheck-error))))
+	      (overlays-at (point))))))
+
+
+;; headerline contains current function and flycheck error on current line
 (which-func-mode t)
 (setq-default header-line-format
-	      '(
-		(which-func-mode which-func-format)
-		(flymake-mode (" " (:eval (aw-flymake-get-err))))
-		))
+	      '((which-func-mode which-func-format)
+		(flycheck-mode (" " (:eval (aw-flycheck-error-message-at-point))))))
 </pre>
 </div>
 </div>
@@ -432,123 +439,74 @@ bright. Tune them down a bit.
 <div class="outline-text-2" id="text-woman">
 <div class="org-src-container">
 
-<pre class="src src-emacs-lisp">  ;; Customizations for woman manual viewer
-  
-  (require 'woman)
-  
-  (setq woman-use-own-frame nil)
-  
-  
-  ;; Stuff for grabbing headers from man pages
-  ;;
-  ;; Pressing 'h' in a woman buffer grabs all #include lines and puts them in the kill ring
-  ;;
-  (defun aw-interesting-beginning-of-line ()
-    ""
-    (save-excursion
-      (beginning-of-line)
-      (while (looking-at "[\t ]")
-        (forward-char))
-      (point)))
-  
-  
-  (defun aw-interesting-end-of-line ()
-    ""
-    (save-excursion
-      (end-of-line)
-      (while (looking-at "[\t ]")
-        (backward-char))
-      (point)))
-  
-  (defun aw-current-interesting-line ()
-    ""
-    (buffer-substring-no-properties
-     (aw-interesting-beginning-of-line)
-     (aw-interesting-end-of-line)))
-  
-  
-  (defun aw-grab-includes-from-woman ()
-    ""
-    (interactive)
-    (save-excursion
-      (goto-char (point-min))
-      (while (not (looking-at "SYNOPSIS"))
-        (forward-line))
-      (let ((s ""))
-        (while (not (looking-at "DESCRIPTION"))
-          (if (looking-at "[         ]*#include")
-              (setq s (concat s (aw-current-interesting-line) "\n")))
-          (forward-line))
-        (kill-new s))))
-  
-  (defun aw-woman-hook ()
-    ""
-    (define-key woman-mode-map "h" 'aw-grab-includes-from-woman))
-  
-  (add-hook 'woman-mode-hook 'aw-woman-hook)
+<pre class="src src-emacs-lisp">;; Customizations for woman manual viewer
+
+(require 'woman)
+
+(setq woman-use-own-frame nil)
+
+
+;; Stuff for grabbing headers from man pages
+;;
+;; Pressing 'h' in a woman buffer grabs all #include lines and puts them in the kill ring
+;;
+(defun aw-interesting-beginning-of-line ()
+  ""
+  (save-excursion
+    (beginning-of-line)
+    (while (looking-at "[\t ]")
+      (forward-char))
+    (point)))
+
+
+(defun aw-interesting-end-of-line ()
+  ""
+  (save-excursion
+    (end-of-line)
+    (while (looking-at "[\t ]")
+      (backward-char))
+    (point)))
+
+(defun aw-current-interesting-line ()
+  ""
+  (buffer-substring-no-properties
+   (aw-interesting-beginning-of-line)
+   (aw-interesting-end-of-line)))
+
+
+(defun aw-grab-includes-from-woman ()
+  ""
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (while (not (looking-at "SYNOPSIS"))
+      (forward-line))
+    (let ((include-lines))
+      (while (not (looking-at "DESCRIPTION"))
+	(let ((line (aw-current-interesting-line)))
+	  (and (string-prefix-p "#include" line)
+	       (add-to-list 'include-lines line t)))
+	(forward-line))
+      (when include-lines
+	(kill-new (mapconcat 'identity include-lines "\n"))
+	(message "%d #include-lines added to killring" (length include-lines))))))
+
+(defun aw-woman-hook ()
+  ""
+  (define-key woman-mode-map "h" 'aw-grab-includes-from-woman))
+
+(add-hook 'woman-mode-hook 'aw-woman-hook)
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-flymake" class="outline-2">
-<h2 id="flymake"><a id="sec-5" name="sec-5"></a><span class="section-number-2">5</span> flymake</h2>
-<div class="outline-text-2" id="text-flymake">
+<div id="outline-container-flycheck" class="outline-2">
+<h2 id="flycheck"><a id="sec-5" name="sec-5"></a><span class="section-number-2">5</span> flycheck</h2>
+<div class="outline-text-2" id="text-flycheck">
 <div class="org-src-container">
 
-<pre class="src src-emacs-lisp">;; customizations for flymake
-
-
-(require 'flymake)
-
-; no ugly gui warnings when flymake can't be enabled
-(setq flymake-gui-warnings-enabled nil)
-
-; some logging
-(setq flymake-log-level 0)
-
-(defun aw-flymake-if-buffer-isnt-tramp ()
-  (if (not (and (boundp 'tramp-file-name-structure)
-		(string-match (car tramp-file-name-structure) (buffer-file-name))))
-      (flymake-mode t)))
-
-; enables flymake mode iff buffer has a filename set,
-; otherwise things breaks badly for things such as emerge
-(defun aw-flymake-if-buffer-has-filename ()
-  (if (buffer-file-name)
-      (aw-flymake-if-buffer-isnt-tramp)))
-
-(defun aw-flymake-get-err ()
-  "Gets first error message for current line"
-  (let ((fm-err (car (flymake-find-err-info flymake-err-info (flymake-current-line-no)))))
-    (if fm-err
-	(flymake-ler-text (nth 0 fm-err)))))
-
-(defun aw-flymake-display-err ()
-  (interactive)
-  (let ((err (aw-flymake-get-err)))
-    (message (format "FLYMAKE: %s" err))))
-
-(defmacro aw-flymake-add-simple (ptrn cmd)
-  `(add-to-list 'flymake-allowed-file-name-masks
-		(list ,ptrn
-		      (lambda ()
-			(let* ((temp-file (flymake-init-create-temp-buffer-copy
-					   'flymake-create-temp-inplace))
-			       (local-file (file-relative-name 
-					    temp-file
-					    (file-name-directory buffer-file-name))))
-			  (list ,cmd (list local-file)))))))
-
-
-
-; enable flymake on c
-;(add-hook 'c-mode-hook 'aw-flymake-if-buffer-has-filename t)
-; enable flymake on py
-;(add-hook 'python-mode-hook 'aw-flymake-if-buffer-has-filename t)
-
-; Or lets do a global enable global enable
-(add-hook 'find-file-hook 'aw-flymake-if-buffer-has-filename)
+<pre class="src src-emacs-lisp">(add-hook 'after-init-hook #'global-flycheck-mode)
 </pre>
 </div>
 </div>
@@ -946,13 +904,6 @@ sh-indent-comment to allow indentation of comment (only) lines.
 (remove-hook 'python-mode-hook 'pylint-python-hook)
 
 
-;; use pyflakes to check .py files.
-(aw-flymake-add-simple "\\.py\\'" "pyflakes")
-;; and pyrexc to check .pyx files.
-(aw-flymake-add-simple "\\.pyx\\'" "pyrexc")
-
-
-
 (defun aw-py-docstr-p ()
   (let* ((ppss (syntax-ppss))
 	 (strbeg (nth 8 ppss)))
@@ -1137,78 +1088,61 @@ Default is raise-frame, which most of the time is useless.
 </div>
 </div>
 
+<div id="outline-container-ediff" class="outline-2">
+<h2 id="ediff"><a id="sec-14" name="sec-14"></a><span class="section-number-2">14</span> ediff</h2>
+<div class="outline-text-2" id="text-ediff">
+
+<p>
+vc-resolve-conflicts brings up ediff. Running a tiling window manager
+so can't have ediff do crazy stuff like open a separate frame.
+</p>
+<pre class="example">
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+</pre>
+</div>
+</div>
 <div id="outline-container-git" class="outline-2">
-<h2 id="git"><a id="sec-14" name="sec-14"></a><span class="section-number-2">14</span> git</h2>
+<h2 id="git"><a id="sec-15" name="sec-15"></a><span class="section-number-2">15</span> git</h2>
 <div class="outline-text-2" id="text-git">
 </div>
 
-<div id="outline-container-git-git.rebase..i.todo.mode." class="outline-3">
-<h3 id="git-git.rebase..i.todo.mode."><a id="sec-14-1" name="sec-14-1"></a><span class="section-number-3">14.1</span> git rebase -i todo mode.</h3>
-<div class="outline-text-3" id="text-git-git.rebase..i.todo.mode.">
-
-<p>
-Here is a simple major mode for the todo files created by "git rebase
--i". It allows changing the action with SPC and showing the diff with
-RET.
-</p>
+<div id="outline-container-git-magit" class="outline-3">
+<h3 id="git-magit"><a id="sec-15-1" name="sec-15-1"></a><span class="section-number-3">15.1</span> magit</h3>
+<div class="outline-text-3" id="text-git-magit">
 
 <div class="org-src-container">
 
-<pre class="src src-emacs-lisp">(defun aw-git-rebase-todo-change-action ()
-  ""
-  (interactive)
-  (save-excursion
-    (beginning-of-line)
-    (cond
-     ((looking-at "pick ") (replace-match "reword "))
-     ((looking-at "reword ") (replace-match "squash "))
-     ((looking-at "squash ") (replace-match "edit "))
-     ((looking-at "edit ") (replace-match "fixup "))
-     ((looking-at "fixup ") (replace-match "pick ")))))
-
-(defun aw-git-rebase-get-sha ()
-  ""
-  (interactive)
-  (save-excursion
-    (beginning-of-line)
-    (forward-word)
-    (forward-word)
-    (current-word)))
-
-
-(defun aw-git-rebase-show ()
-  (interactive)
-  (let ((sha (aw-git-rebase-get-sha)))
-    (with-current-buffer (get-buffer-create "*git-rebase-todo diff*")
-      (display-buffer (current-buffer) t)
-      (let ((inhibit-read-only t))
-        (erase-buffer)
-        (call-process "git" nil (current-buffer) t "show" sha)
-        (diff-mode))
-      (setq buffer-read-only t))))
-
-(defun aw-git-rebase-todo-mode-setup ()
-  (setq truncate-lines t)
-  (setq aw-git-rebase-todo-mode-keymap (make-sparse-keymap))
-  (define-key aw-git-rebase-todo-mode-keymap " " 'aw-git-rebase-todo-change-action)
-  (define-key aw-git-rebase-todo-mode-keymap (kbd "RET") 'aw-git-rebase-show)
-  (use-local-map aw-git-rebase-todo-mode-keymap))
-
-(define-generic-mode aw-git-rebase-todo-mode
-  '("#")                                     ; comments
-  '("pick" "reword" "squash" "edit" "fixup") ; keywords
-  nil                                        ; fontlock words
-  '(".*/git-rebase-todo")                    ; mode-alist
-  '(aw-git-rebase-todo-mode-setup)           ; function list
-  "git rebase -i todo list mode")	     ; docstring
+<pre class="src src-emacs-lisp">(setq magit-completing-read-function 'magit-ido-completing-read)
+(setq git-commit-summary-max-length 70)
+(setq magit-process-popup-time 0)
+(global-set-key "\C-cm" 'magit-status)
 </pre>
 </div>
 </div>
 </div>
 
 
+<div id="outline-container-git-running.git.from.shell.buffers" class="outline-3">
+<h3 id="git-running.git.from.shell.buffers"><a id="sec-15-2" name="sec-15-2"></a><span class="section-number-3">15.2</span> running git from shell buffers</h3>
+<div class="outline-text-3" id="text-git-running.git.from.shell.buffers">
+
+<p>
+Sometimes it is nice to run 'git' from with in a shell buffer.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(setenv "GIT_PAGER" "")
+(setenv "GIT_EDITOR" "emacsclient")
+</pre>
+</div>
+</div>
+</div>
+
+
+
 <div id="outline-container-git-Fast.import" class="outline-3">
-<h3 id="git-Fast.import"><a id="sec-14-2" name="sec-14-2"></a><span class="section-number-3">14.2</span> Fast import</h3>
+<h3 id="git-Fast.import"><a id="sec-15-3" name="sec-15-3"></a><span class="section-number-3">15.3</span> Fast import</h3>
 <div class="outline-text-3" id="text-git-Fast.import">
 
 <div class="org-src-container">
@@ -1223,7 +1157,7 @@ RET.
 	  (insert "data " (number-to-string (buffer-size data)) "\n"
 		  (with-current-buffer data
 		    (buffer-string)) "\n")
-	(insert "data " (number-to-string (length data)) "\n" data "\n")))
+	(insert "data " (number-to-string (string-bytes data)) "\n" data "\n")))
     (when rest
       (aw-git-fast-import--insert-one-file rest))))
 
@@ -1232,7 +1166,7 @@ RET.
   (with-temp-buffer
     (insert "commit " branch "\n")
     (insert "committer " user-full-name " &lt;" user-mail-address "&gt; now\n")
-    (insert "data " (number-to-string (length commitmsg)) "\n" commitmsg "\n")
+    (insert "data " (number-to-string (string-bytes commitmsg)) "\n" commitmsg "\n")
     (unless initial
       (insert "from " branch "^0\n"))
     (insert "deleteall\n")
@@ -1246,7 +1180,7 @@ RET.
 </div>
 
 <div id="outline-container-org" class="outline-2">
-<h2 id="org"><a id="sec-15" name="sec-15"></a><span class="section-number-2">15</span> org</h2>
+<h2 id="org"><a id="sec-16" name="sec-16"></a><span class="section-number-2">16</span> org</h2>
 <div class="outline-text-2" id="text-org">
 
 <div class="org-src-container">
@@ -1292,7 +1226,7 @@ Syntax hilight. For exported code make sure htmlize package is installed.
 </div>
 
 <div id="outline-container-org-Auto.byte.compile.after.tangling.to..el.file" class="outline-3">
-<h3 id="org-Auto.byte.compile.after.tangling.to..el.file"><a id="sec-15-1" name="sec-15-1"></a><span class="section-number-3">15.1</span> Auto byte compile after tangling to .el file</h3>
+<h3 id="org-Auto.byte.compile.after.tangling.to..el.file"><a id="sec-16-1" name="sec-16-1"></a><span class="section-number-3">16.1</span> Auto byte compile after tangling to .el file</h3>
 <div class="outline-text-3" id="text-org-Auto.byte.compile.after.tangling.to..el.file">
 
 <div class="org-src-container">
@@ -1309,7 +1243,7 @@ Syntax hilight. For exported code make sure htmlize package is installed.
 </div>
 
 <div id="outline-container-org-Use.the.heading.path.as.CUSTOM.ID.for.export." class="outline-3">
-<h3 id="org-Use.the.heading.path.as.CUSTOM.ID.for.export."><a id="sec-15-2" name="sec-15-2"></a><span class="section-number-3">15.2</span> Use the heading-path as CUSTOM<sub>ID</sub> for export.</h3>
+<h3 id="org-Use.the.heading.path.as.CUSTOM.ID.for.export."><a id="sec-16-2" name="sec-16-2"></a><span class="section-number-3">16.2</span> Use the heading-path as CUSTOM<sub>ID</sub> for export.</h3>
 <div class="outline-text-3" id="text-org-Use.the.heading.path.as.CUSTOM.ID.for.export.">
 
 <p>
@@ -1349,7 +1283,7 @@ buffer used for export).
 </div>
 
 <div id="outline-container-org-init.el.in.org.git.export" class="outline-3">
-<h3 id="org-init.el.in.org.git.export"><a id="sec-15-3" name="sec-15-3"></a><span class="section-number-3">15.3</span> init.el in org git export</h3>
+<h3 id="org-init.el.in.org.git.export"><a id="sec-16-3" name="sec-16-3"></a><span class="section-number-3">16.3</span> init.el in org git export</h3>
 <div class="outline-text-3" id="text-org-init.el.in.org.git.export">
 
 <p>
@@ -1395,7 +1329,7 @@ tangled into el.
 </div>
 </div>
 <div id="outline-container-nxml" class="outline-2">
-<h2 id="nxml"><a id="sec-16" name="sec-16"></a><span class="section-number-2">16</span> nxml</h2>
+<h2 id="nxml"><a id="sec-17" name="sec-17"></a><span class="section-number-2">17</span> nxml</h2>
 <div class="outline-text-2" id="text-nxml">
 
 <div class="org-src-container">
@@ -1412,8 +1346,8 @@ tangled into el.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Anders Waldenborg</p>
-<p class="date">Created: 2014-12-03 Wed 12:00</p>
-<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.50.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="date">Created: 2016-10-25 tis 21:10</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.1.50.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

@@ -5,9 +5,9 @@
             (load (locate-user-emacs-file "package.el") t))
     (package-initialize)
     (add-to-list 'package-archives
-                 '("marmalade" . "http://marmalade-repo.org/packages/"))
+                 '("marmalade" . "https://marmalade-repo.org/packages/"))
     (add-to-list 'package-archives
-                 '("melpa" . "http://melpa.milkbox.net/packages/")))
+                 '("melpa" . "https://stable-melpa.org/packages/")))
 
 (blink-cursor-mode 0)
 
@@ -38,7 +38,7 @@
 (setq inhibit-startup-screen t)
 (setq calendar-week-start-day 1)
 
-(setq aw-default-font "Inconsolata-10")
+(setq aw-default-font "InputMono Light-10")
 
 (defun aw-large-frame ()
   "Create a new fullscreen frame with a larger font (for pair programming/review)"
@@ -63,13 +63,18 @@
       (set-frame-parameter nil 'fullscreen 'fullboth)
       (selected-frame))))
 
-;; headerline contains current function and flymake error on current line
+(defun aw-flycheck-error-message-at-point ()
+  (car (delq nil
+	     (mapcar
+	      (lambda (o) (and (overlay-get o 'flycheck-overlay) (flycheck-error-message (overlay-get o 'flycheck-error))))
+	      (overlays-at (point))))))
+
+
+;; headerline contains current function and flycheck error on current line
 (which-func-mode t)
 (setq-default header-line-format
-	      '(
-		(which-func-mode which-func-format)
-		(flymake-mode (" " (:eval (aw-flymake-get-err))))
-		))
+	      '((which-func-mode which-func-format)
+		(flycheck-mode (" " (:eval (aw-flycheck-error-message-at-point))))))
 
 (eval-after-load 'ansi-color
   '(progn
@@ -105,116 +110,65 @@
   (interactive)
   (aw-popup-menu-at-point 'yank-menu))
 
-  
-  ;; Customizations for woman manual viewer
-  
-  (require 'woman)
-  
-  (setq woman-use-own-frame nil)
-  
-  
-  ;; Stuff for grabbing headers from man pages
-  ;;
-  ;; Pressing 'h' in a woman buffer grabs all #include lines and puts them in the kill ring
-  ;;
-  (defun aw-interesting-beginning-of-line ()
-    ""
-    (save-excursion
-      (beginning-of-line)
-      (while (looking-at "[\t ]")
-        (forward-char))
-      (point)))
-  
-  
-  (defun aw-interesting-end-of-line ()
-    ""
-    (save-excursion
-      (end-of-line)
-      (while (looking-at "[\t ]")
-        (backward-char))
-      (point)))
-  
-  (defun aw-current-interesting-line ()
-    ""
-    (buffer-substring-no-properties
-     (aw-interesting-beginning-of-line)
-     (aw-interesting-end-of-line)))
-  
-  
-  (defun aw-grab-includes-from-woman ()
-    ""
-    (interactive)
-    (save-excursion
-      (goto-char (point-min))
-      (while (not (looking-at "SYNOPSIS"))
-        (forward-line))
-      (let ((s ""))
-        (while (not (looking-at "DESCRIPTION"))
-          (if (looking-at "[         ]*#include")
-              (setq s (concat s (aw-current-interesting-line) "\n")))
-          (forward-line))
-        (kill-new s))))
-  
-  (defun aw-woman-hook ()
-    ""
-    (define-key woman-mode-map "h" 'aw-grab-includes-from-woman))
-  
-  (add-hook 'woman-mode-hook 'aw-woman-hook)
-  
+;; Customizations for woman manual viewer
 
-;; customizations for flymake
+(require 'woman)
+
+(setq woman-use-own-frame nil)
 
 
-(require 'flymake)
+;; Stuff for grabbing headers from man pages
+;;
+;; Pressing 'h' in a woman buffer grabs all #include lines and puts them in the kill ring
+;;
+(defun aw-interesting-beginning-of-line ()
+  ""
+  (save-excursion
+    (beginning-of-line)
+    (while (looking-at "[\t ]")
+      (forward-char))
+    (point)))
 
-; no ugly gui warnings when flymake can't be enabled
-(setq flymake-gui-warnings-enabled nil)
 
-; some logging
-(setq flymake-log-level 0)
+(defun aw-interesting-end-of-line ()
+  ""
+  (save-excursion
+    (end-of-line)
+    (while (looking-at "[\t ]")
+      (backward-char))
+    (point)))
 
-(defun aw-flymake-if-buffer-isnt-tramp ()
-  (if (not (and (boundp 'tramp-file-name-structure)
-		(string-match (car tramp-file-name-structure) (buffer-file-name))))
-      (flymake-mode t)))
+(defun aw-current-interesting-line ()
+  ""
+  (buffer-substring-no-properties
+   (aw-interesting-beginning-of-line)
+   (aw-interesting-end-of-line)))
 
-; enables flymake mode iff buffer has a filename set,
-; otherwise things breaks badly for things such as emerge
-(defun aw-flymake-if-buffer-has-filename ()
-  (if (buffer-file-name)
-      (aw-flymake-if-buffer-isnt-tramp)))
 
-(defun aw-flymake-get-err ()
-  "Gets first error message for current line"
-  (let ((fm-err (car (flymake-find-err-info flymake-err-info (flymake-current-line-no)))))
-    (if fm-err
-	(flymake-ler-text (nth 0 fm-err)))))
-
-(defun aw-flymake-display-err ()
+(defun aw-grab-includes-from-woman ()
+  ""
   (interactive)
-  (let ((err (aw-flymake-get-err)))
-    (message (format "FLYMAKE: %s" err))))
+  (save-excursion
+    (goto-char (point-min))
+    (while (not (looking-at "SYNOPSIS"))
+      (forward-line))
+    (let ((include-lines))
+      (while (not (looking-at "DESCRIPTION"))
+	(let ((line (aw-current-interesting-line)))
+	  (and (string-prefix-p "#include" line)
+	       (add-to-list 'include-lines line t)))
+	(forward-line))
+      (when include-lines
+	(kill-new (mapconcat 'identity include-lines "\n"))
+	(message "%d #include-lines added to killring" (length include-lines))))))
 
-(defmacro aw-flymake-add-simple (ptrn cmd)
-  `(add-to-list 'flymake-allowed-file-name-masks
-		(list ,ptrn
-		      (lambda ()
-			(let* ((temp-file (flymake-init-create-temp-buffer-copy
-					   'flymake-create-temp-inplace))
-			       (local-file (file-relative-name 
-					    temp-file
-					    (file-name-directory buffer-file-name))))
-			  (list ,cmd (list local-file)))))))
+(defun aw-woman-hook ()
+  ""
+  (define-key woman-mode-map "h" 'aw-grab-includes-from-woman))
 
+(add-hook 'woman-mode-hook 'aw-woman-hook)
 
-
-; enable flymake on c
-;(add-hook 'c-mode-hook 'aw-flymake-if-buffer-has-filename t)
-; enable flymake on py
-;(add-hook 'python-mode-hook 'aw-flymake-if-buffer-has-filename t)
-
-; Or lets do a global enable global enable
-(add-hook 'find-file-hook 'aw-flymake-if-buffer-has-filename)
+(add-hook 'after-init-hook #'global-flycheck-mode)
 
 (global-set-key "\M-g" 'goto-line)
 
@@ -437,13 +391,6 @@
 (remove-hook 'python-mode-hook 'pylint-python-hook)
 
 
-;; use pyflakes to check .py files.
-(aw-flymake-add-simple "\\.py\\'" "pyflakes")
-;; and pyrexc to check .pyx files.
-(aw-flymake-add-simple "\\.pyx\\'" "pyrexc")
-
-
-
 (defun aw-py-docstr-p ()
   (let* ((ppss (syntax-ppss))
 	 (strbeg (nth 8 ppss)))
@@ -560,53 +507,13 @@
                                                       t)
                                  (ucs-names)))))
 
-(defun aw-git-rebase-todo-change-action ()
-  ""
-  (interactive)
-  (save-excursion
-    (beginning-of-line)
-    (cond
-     ((looking-at "pick ") (replace-match "reword "))
-     ((looking-at "reword ") (replace-match "squash "))
-     ((looking-at "squash ") (replace-match "edit "))
-     ((looking-at "edit ") (replace-match "fixup "))
-     ((looking-at "fixup ") (replace-match "pick ")))))
+(setq magit-completing-read-function 'magit-ido-completing-read)
+(setq git-commit-summary-max-length 70)
+(setq magit-process-popup-time 0)
+(global-set-key "\C-cm" 'magit-status)
 
-(defun aw-git-rebase-get-sha ()
-  ""
-  (interactive)
-  (save-excursion
-    (beginning-of-line)
-    (forward-word)
-    (forward-word)
-    (current-word)))
-
-
-(defun aw-git-rebase-show ()
-  (interactive)
-  (let ((sha (aw-git-rebase-get-sha)))
-    (with-current-buffer (get-buffer-create "*git-rebase-todo diff*")
-      (display-buffer (current-buffer) t)
-      (let ((inhibit-read-only t))
-        (erase-buffer)
-        (call-process "git" nil (current-buffer) t "show" sha)
-        (diff-mode))
-      (setq buffer-read-only t))))
-
-(defun aw-git-rebase-todo-mode-setup ()
-  (setq truncate-lines t)
-  (setq aw-git-rebase-todo-mode-keymap (make-sparse-keymap))
-  (define-key aw-git-rebase-todo-mode-keymap " " 'aw-git-rebase-todo-change-action)
-  (define-key aw-git-rebase-todo-mode-keymap (kbd "RET") 'aw-git-rebase-show)
-  (use-local-map aw-git-rebase-todo-mode-keymap))
-
-(define-generic-mode aw-git-rebase-todo-mode
-  '("#")                                     ; comments
-  '("pick" "reword" "squash" "edit" "fixup") ; keywords
-  nil                                        ; fontlock words
-  '(".*/git-rebase-todo")                    ; mode-alist
-  '(aw-git-rebase-todo-mode-setup)           ; function list
-  "git rebase -i todo list mode")	     ; docstring
+(setenv "GIT_PAGER" "")
+(setenv "GIT_EDITOR" "emacsclient")
 
 (defun aw-git-fast-import--insert-one-file (filalist)
   (let ((f (car filalist))
@@ -618,7 +525,7 @@
 	  (insert "data " (number-to-string (buffer-size data)) "\n"
 		  (with-current-buffer data
 		    (buffer-string)) "\n")
-	(insert "data " (number-to-string (length data)) "\n" data "\n")))
+	(insert "data " (number-to-string (string-bytes data)) "\n" data "\n")))
     (when rest
       (aw-git-fast-import--insert-one-file rest))))
 
@@ -627,7 +534,7 @@
   (with-temp-buffer
     (insert "commit " branch "\n")
     (insert "committer " user-full-name " <" user-mail-address "> now\n")
-    (insert "data " (number-to-string (length commitmsg)) "\n" commitmsg "\n")
+    (insert "data " (number-to-string (string-bytes commitmsg)) "\n" commitmsg "\n")
     (unless initial
       (insert "from " branch "^0\n"))
     (insert "deleteall\n")
