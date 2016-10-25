@@ -793,7 +793,7 @@ Sometimes it is nice to run 'git' from with in a shell buffer.
 	  (insert "data " (number-to-string (buffer-size data)) "\n"
 		  (with-current-buffer data
 		    (buffer-string)) "\n")
-	(insert "data " (number-to-string (length data)) "\n" data "\n")))
+	(insert "data " (number-to-string (string-bytes data)) "\n" data "\n")))
     (when rest
       (aw-git-fast-import--insert-one-file rest))))
 
@@ -802,7 +802,7 @@ Sometimes it is nice to run 'git' from with in a shell buffer.
   (with-temp-buffer
     (insert "commit " branch "\n")
     (insert "committer " user-full-name " <" user-mail-address "> now\n")
-    (insert "data " (number-to-string (length commitmsg)) "\n" commitmsg "\n")
+    (insert "data " (number-to-string (string-bytes commitmsg)) "\n" commitmsg "\n")
     (unless initial
       (insert "from " branch "^0\n"))
     (insert "deleteall\n")
