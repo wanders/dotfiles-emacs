@@ -480,6 +480,11 @@ This is how I define them.
 
 * flyspell
 
+Enable spell checking in text-mode buffers
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
+(add-hook 'text-mode-hook 'flyspell-mode t)
+#+END_SRC
+
 Make flyspell use wave underlines in emacs 24.3+.
 
 #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
