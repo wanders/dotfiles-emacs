@@ -1,13 +1,10 @@
-
 ;; THIS FILE IS TANGLED FROM AN ORG FILE! DO NOT EDIT!
 
-  (when (or (>= emacs-major-version 24)
-            (load (locate-user-emacs-file "package.el") t))
-    (package-initialize)
-    (add-to-list 'package-archives
-                 '("marmalade" . "https://marmalade-repo.org/packages/"))
-    (add-to-list 'package-archives
-                 '("melpa" . "https://stable-melpa.org/packages/")))
+  (package-initialize)
+  (add-to-list 'package-archives
+               '("marmalade" . "https://marmalade-repo.org/packages/"))
+  (add-to-list 'package-archives
+               '("melpa" . "https://stable-melpa.org/packages/"))
 
 (blink-cursor-mode 0)
 
@@ -19,8 +16,8 @@
 (setq-default indicate-empty-lines t)
 
 (show-paren-mode t)
-(set-face-background 'show-paren-mismatch-face "red")
-(set-face-background 'show-paren-match-face "#f0f0f0")
+(set-face-background 'show-paren-mismatch "red")
+(set-face-background 'show-paren-match "#f0f0f0")
 (setq show-paren-style 'expression)
 
 ;; Hilight trailing whitespace
@@ -38,30 +35,42 @@
 (setq inhibit-startup-screen t)
 (setq calendar-week-start-day 1)
 
-(setq aw-default-font "InputMono Light-10")
+(defun aw-font-if-exists (fontname)
+  ""
+  (when (find-font (font-spec :name fontname))
+    fontname))
+
+(defun aw-default-font-name ()
+  ""
+  (or
+   (aw-font-if-exists "InputMono Light")
+   (aw-font-if-exists "Input")
+   (aw-font-if-exists "Inconsolata")
+   (aw-font-if-exists "UbuntuMono")
+   "Mono"))
+
+(defun aw-get-font-for-frame (frame)
+  "Return font with size based on how large the monitor is"
+  (let* ((screen-w-mm (nth 1 (assoc 'mm-size (frame-monitor-attributes frame))))
+	 (font-size (or (and screen-w-mm (> screen-w-mm 400) 12) 10)))
+    (format "%s-%d" (aw-default-font-name) font-size)))
+
+(defun aw-new-frame-set-font-function (frame)
+  ""
+  (with-selected-frame frame
+    (set-frame-font (aw-get-font-for-frame frame))))
+(add-hook 'after-make-frame-functions 'aw-new-frame-set-font-function)
 
 (defun aw-large-frame ()
-  "Create a new fullscreen frame with a larger font (for pair programming/review)"
+  "Create a new fullscreen frame with a larger font (for pair programming/review)."
   (interactive)
-  (message "aw-large-frame requires emacs23"))
+  (with-selected-frame (make-frame '((name . "Emacs Largefont frame")
+		       (window-system . x)))
+    (set-frame-font (format "%s-18" (aw-default-font-name)) t)
+    (set-frame-parameter nil 'fullscreen 'fullboth)
+    (selected-frame)))
 
-(when (>= emacs-major-version 23)
-  (set-frame-font aw-default-font t)
-  (defun aw-new-frame-set-font-function (frame)
-    ""
-    (with-selected-frame frame
-      (set-frame-font aw-default-font nil)))
-
-  (add-hook 'after-make-frame-functions 'aw-new-frame-set-font-function)
-
-  (defun aw-large-frame ()
-    "Create a new fullscreen frame with a larger font (for pair programming/review)"
-    (interactive)
-    (with-selected-frame (make-frame '((name . "Emacs Largefont frame")
-				       (window-system . x)))
-      (set-frame-font "Inconsolata-16" t)
-      (set-frame-parameter nil 'fullscreen 'fullboth)
-      (selected-frame))))
+(define-key ctl-x-5-map "l" 'aw-large-frame)
 
 (defun aw-flycheck-error-message-at-point ()
   (car (delq nil
@@ -194,10 +203,6 @@
 
 (define-key help-map "x" 'describe-text-properties)
 
-; C-x 5 l => create new "large" frame. A fullscreen frame with larger
-;            font is nice for pair-programming/review.
-(define-key ctl-x-5-map "l" 'aw-large-frame)
-
 ; "C-c w" => Add symbol under cursor to kill ring. When programming I
 ;            often write a call to a new function that I need to write
 ;            before writing the actual function, and use this to get
@@ -318,9 +323,17 @@
 ; enable flyspell in C sources.
 (add-hook 'c-mode-hook 'flyspell-prog-mode t)
 
+  (defun aw-c-setup-hideifdef ()
+    (setq hide-ifdef-shadow t)
+    (setq hide-ifdef-initially t)
+    (hide-ifdef-mode 1))
+
+  (add-hook 'c-mode-hook 'aw-c-setup-hideifdef)
+
+(add-hook 'text-mode-hook 'flyspell-mode t)
+
 (eval-after-load 'flyspell
-  '(when (or (> emacs-major-version 24)
-            (and (= emacs-major-version 24) (>= emacs-minor-version 3)))
+  '(progn
     (set-face-attribute 'flyspell-incorrect nil
                         :inherit nil
                         :underline '(:color "#cc0000" :style wave))
@@ -551,7 +564,7 @@
 
 (setq
  org-babel-load-languages
- '((sh . t)
+ '((shell . t)
    (python . t)
    (emacs-lisp . t)))
 
@@ -563,7 +576,6 @@
         (byte-compile-file fn))))
   
   (add-hook 'org-babel-post-tangle-hook 'aw-el-byte-compile-post-tangle)
-  
 
   (defun aw-org-safe-path-one-safelify (a)
     (replace-regexp-in-string "[^a-zA-Z0-9]" "." (org-no-properties a)))
@@ -583,7 +595,6 @@
           (aw-org-set-custom-id)))))
 
   (add-hook 'org-export-before-parsing-hook 'aw-org-set-custom-id-everywhere)
-  
 
     (defun aw-find-tangle-dest-files ()
       (let ((blocks (org-babel-tangle-collect-blocks))

@@ -3,23 +3,30 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
+<!-- 2018-02-24 lör 19:15 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Anders Waldenborg's emacs config</title>
-<!-- 2016-10-25 tis 21:10 -->
-<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
-<meta  name="generator" content="Org-mode" />
-<meta  name="author" content="Anders Waldenborg" />
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Anders Waldenborg" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
-  .title  { text-align: center; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
   .todo   { font-family: monospace; color: red; }
-  .done   { color: green; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
   .tag    { background-color: #eee; font-family: monospace;
             padding: 2px; font-size: 80%; font-weight: normal; }
   .timestamp { color: #bebebe; }
   .timestamp-kwd { color: #5f9ea0; }
-  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
-  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
-  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
   .underline { text-decoration: underline; }
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
@@ -46,27 +53,110 @@
     border: 1px solid black;
   }
   pre.src:hover:before { display: inline;}
-  pre.src-sh:before    { content: 'sh'; }
-  pre.src-bash:before  { content: 'sh'; }
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
   pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
-  pre.src-R:before     { content: 'R'; }
-  pre.src-perl:before  { content: 'Perl'; }
-  pre.src-java:before  { content: 'Java'; }
-  pre.src-sql:before   { content: 'SQL'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
 
   table { border-collapse:collapse; }
   caption.t-above { caption-side: top; }
   caption.t-bottom { caption-side: bottom; }
   td, th { vertical-align:top;  }
-  th.right  { text-align: center;  }
-  th.left   { text-align: center;   }
-  th.center { text-align: center; }
-  td.right  { text-align: right;  }
-  td.left   { text-align: left;   }
-  td.center { text-align: center; }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
   dt { font-weight: bold; }
-  .footpara:nth-child(2) { display: inline; }
-  .footpara { display: block; }
+  .footpara { display: inline; }
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
@@ -86,6 +176,7 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
 <script type="text/javascript">
@@ -93,7 +184,7 @@
 @licstart  The following is the entire license notice for the
 JavaScript code in this tag.
 
-Copyright (C) 2012-2013 Free Software Foundation, Inc.
+Copyright (C) 2012-2017 Free Software Foundation, Inc.
 
 The JavaScript code in this tag is free software: you can
 redistribute it and/or modify it under the terms of the GNU
@@ -147,9 +238,10 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#Appearance-Remove.stuff.from.the.UI.">2.1. Remove stuff from the UI.</a></li>
 <li><a href="#Appearance-Show.matching.parens">2.2. Show matching parens</a></li>
-<li><a href="#Appearance-Large.frame">2.3. Large frame</a></li>
-<li><a href="#Appearance-Header.line">2.4. Header line</a></li>
-<li><a href="#Appearance-ANSI.colors">2.5. ANSI colors</a></li>
+<li><a href="#Appearance-Fonts">2.3. Fonts</a></li>
+<li><a href="#Appearance-Large.frame">2.4. Large frame</a></li>
+<li><a href="#Appearance-Header.line">2.5. Header line</a></li>
+<li><a href="#Appearance-ANSI.colors">2.6. ANSI colors</a></li>
 </ul>
 </li>
 <li><a href="#yankmenu">3. yankmenu</a></li>
@@ -198,10 +290,9 @@ for the JavaScript code in this tag.
 </p>
 
 
-<div id="outline-container-Packages" class="outline-2">
-<h2 id="Packages"><a id="sec-1" name="sec-1"></a><span class="section-number-2">1</span> Packages</h2>
+<div id="outline-container-orgaf56e88" class="outline-2">
+<h2 id="Packages"><a id="orgaf56e88"></a><span class="section-number-2">1</span> Packages</h2>
 <div class="outline-text-2" id="text-Packages">
-
 <p>
 Initialize package system and add the marmalade and melpa package
 repositories. This snippet comes from <a href="http://irreal.org/blog/?p=923">http://irreal.org/blog/?p=923</a>
@@ -212,43 +303,31 @@ Rumor has that it should be the very first thing in init.el, so here
 we go.
 </p>
 
-<p>
-On older emacs (but probably only works on emacs 23) it tries to load
-package.el from .emacs.d. The last version that works on emacs23
-should be:
-<a href="http://git.savannah.gnu.org/cgit/emacs.git/plain/lisp/emacs-lisp/package.el?id=1a0a666f941c99882093d7bd08ced15033bc3f0c">http://git.savannah.gnu.org/cgit/emacs.git/plain/lisp/emacs-lisp/package.el?id=1a0a666f941c99882093d7bd08ced15033bc3f0c</a>
-</p>
-
 <div class="org-src-container">
-
-<pre class="src src-emacs-lisp">  (when (or (&gt;= emacs-major-version 24)
-            (load (locate-user-emacs-file "package.el") t))
-    (package-initialize)
-    (add-to-list 'package-archives
-                 '("marmalade" . "http://marmalade-repo.org/packages/"))
-    (add-to-list 'package-archives
-                 '("melpa" . "http://melpa.milkbox.net/packages/")))
+<pre class="src src-emacs-lisp">  (package-initialize)
+  (add-to-list 'package-archives
+               '("marmalade" . "https://marmalade-repo.org/packages/"))
+  (add-to-list 'package-archives
+               '("melpa" . "https://stable-melpa.org/packages/"))
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-Appearance" class="outline-2">
-<h2 id="Appearance"><a id="sec-2" name="sec-2"></a><span class="section-number-2">2</span> Appearance</h2>
+<div id="outline-container-org0f7d497" class="outline-2">
+<h2 id="Appearance"><a id="org0f7d497"></a><span class="section-number-2">2</span> Appearance</h2>
 <div class="outline-text-2" id="text-Appearance">
 </div>
 
-<div id="outline-container-Appearance-Remove.stuff.from.the.UI." class="outline-3">
-<h3 id="Appearance-Remove.stuff.from.the.UI."><a id="sec-2-1" name="sec-2-1"></a><span class="section-number-3">2.1</span> Remove stuff from the UI.</h3>
+<div id="outline-container-org7502503" class="outline-3">
+<h3 id="Appearance-Remove.stuff.from.the.UI."><a id="org7502503"></a><span class="section-number-3">2.1</span> Remove stuff from the UI.</h3>
 <div class="outline-text-3" id="text-Appearance-Remove.stuff.from.the.UI.">
-
 <p>
 By default emacs has lots of useless UI elements, remove them to give
 more room for the actual edit buffers.
 </p>
 
 <div class="org-src-container">
-
 <pre class="src src-emacs-lisp">(blink-cursor-mode 0)
 
 (menu-bar-mode 0)
@@ -263,7 +342,6 @@ buffer boundaries in the left fringe.
 </p>
 
 <div class="org-src-container">
-
 <pre class="src src-emacs-lisp">(setq-default indicate-buffer-boundaries 'left)
 (setq-default indicate-empty-lines t)
 </pre>
@@ -271,10 +349,9 @@ buffer boundaries in the left fringe.
 </div>
 </div>
 
-<div id="outline-container-Appearance-Show.matching.parens" class="outline-3">
-<h3 id="Appearance-Show.matching.parens"><a id="sec-2-2" name="sec-2-2"></a><span class="section-number-3">2.2</span> Show matching parens</h3>
+<div id="outline-container-org2d7b298" class="outline-3">
+<h3 id="Appearance-Show.matching.parens"><a id="org2d7b298"></a><span class="section-number-3">2.2</span> Show matching parens</h3>
 <div class="outline-text-3" id="text-Appearance-Show.matching.parens">
-
 <p>
 Showing matching parentheses is nice. Having the whole expression
 within parens highlighted when cursor is on one of the parens is even
@@ -282,28 +359,28 @@ nicer.
 </p>
 
 <div class="org-src-container">
-
 <pre class="src src-emacs-lisp">(show-paren-mode t)
-(set-face-background 'show-paren-mismatch-face "red")
-(set-face-background 'show-paren-match-face "#f0f0f0")
+(set-face-background 'show-paren-mismatch "red")
+(set-face-background 'show-paren-match "#f0f0f0")
 (setq show-paren-style 'expression)
 </pre>
 </div>
 
 
 <div class="org-src-container">
-
-<pre class="src src-emacs-lisp">;; Hilight trailing whitespace
+<pre class="src src-emacs-lisp">
+;; Hilight trailing whitespace
 ;; like this --&gt;   
 ;;
 (setq-default show-trailing-whitespace t)
 (set-face-background 'trailing-whitespace "orange1")
+
 </pre>
 </div>
 
 <div class="org-src-container">
-
-<pre class="src src-emacs-lisp">(setq compilation-scroll-output t)
+<pre class="src src-emacs-lisp">
+(setq compilation-scroll-output t)
 
 (transient-mark-mode t)
 (setq mouse-yank-at-point t)
@@ -311,53 +388,88 @@ nicer.
 (setq user-mail-address "anders@0x63.nu")
 (setq inhibit-startup-screen t)
 (setq calendar-week-start-day 1)
+
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-Appearance-Large.frame" class="outline-3">
-<h3 id="Appearance-Large.frame"><a id="sec-2-3" name="sec-2-3"></a><span class="section-number-3">2.3</span> Large frame</h3>
+<div id="outline-container-org799831d" class="outline-3">
+<h3 id="Appearance-Fonts"><a id="org799831d"></a><span class="section-number-3">2.3</span> Fonts</h3>
+<div class="outline-text-3" id="text-Appearance-Fonts">
+<p>
+Try to cleverly select font and size. Smaller size on laptop screen -
+larger size on large screen.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(defun aw-font-if-exists (fontname)
+  ""
+  (when (find-font (font-spec :name fontname))
+    fontname))
+
+(defun aw-default-font-name ()
+  ""
+  (or
+   (aw-font-if-exists "InputMono Light")
+   (aw-font-if-exists "Input")
+   (aw-font-if-exists "Inconsolata")
+   (aw-font-if-exists "UbuntuMono")
+   "Mono"))
+
+(defun aw-get-font-for-frame (frame)
+  "Return font with size based on how large the monitor is"
+  (let* ((screen-w-mm (nth 1 (assoc 'mm-size (frame-monitor-attributes frame))))
+	 (font-size (or (and screen-w-mm (&gt; screen-w-mm 400) 12) 10)))
+    (format "%s-%d" (aw-default-font-name) font-size)))
+
+(defun aw-new-frame-set-font-function (frame)
+  ""
+  (with-selected-frame frame
+    (set-frame-font (aw-get-font-for-frame frame))))
+(add-hook 'after-make-frame-functions 'aw-new-frame-set-font-function)
+
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org7da84c0" class="outline-3">
+<h3 id="Appearance-Large.frame"><a id="org7da84c0"></a><span class="section-number-3">2.4</span> Large frame</h3>
 <div class="outline-text-3" id="text-Appearance-Large.frame">
+<p>
+Make it possible to open a new "large" frame. A fullscreen frame with
+larger font is nice for pair-programming/review.
+</p>
+
+<p>
+The keybinding <code>C-x 5 l</code> creates such frame.
+</p>
 
 <div class="org-src-container">
-
-<pre class="src src-emacs-lisp">(setq aw-default-font "Inconsolata-10")
-
-(defun aw-large-frame ()
-  "Create a new fullscreen frame with a larger font (for pair programming/review)"
+<pre class="src src-emacs-lisp">(defun aw-large-frame ()
+  "Create a new fullscreen frame with a larger font (for pair programming/review)."
   (interactive)
-  (message "aw-large-frame requires emacs23"))
+  (with-selected-frame (make-frame '((name . "Emacs Largefont frame")
+		       (window-system . x)))
+    (set-frame-font (format "%s-18" (aw-default-font-name)) t)
+    (set-frame-parameter nil 'fullscreen 'fullboth)
+    (selected-frame)))
 
-(when (&gt;= emacs-major-version 23)
-  (set-frame-font aw-default-font t)
-  (defun aw-new-frame-set-font-function (frame)
-    ""
-    (with-selected-frame frame
-      (set-frame-font aw-default-font nil)))
+(define-key ctl-x-5-map "l" 'aw-large-frame)
 
-  (add-hook 'after-make-frame-functions 'aw-new-frame-set-font-function)
-
-  (defun aw-large-frame ()
-    "Create a new fullscreen frame with a larger font (for pair programming/review)"
-    (interactive)
-    (with-selected-frame (make-frame '((name . "Emacs Largefont frame")
-				       (window-system . x)))
-      (set-frame-font "Inconsolata-16" t)
-      (set-frame-parameter nil 'fullscreen 'fullboth)
-      (selected-frame))))
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-Appearance-Header.line" class="outline-3">
-<h3 id="Appearance-Header.line"><a id="sec-2-4" name="sec-2-4"></a><span class="section-number-3">2.4</span> Header line</h3>
+<div id="outline-container-orgaf0f3de" class="outline-3">
+<h3 id="Appearance-Header.line"><a id="orgaf0f3de"></a><span class="section-number-3">2.5</span> Header line</h3>
 <div class="outline-text-3" id="text-Appearance-Header.line">
-
 <div class="org-src-container">
-
-<pre class="src src-emacs-lisp">(defun aw-flycheck-error-message-at-point ()
+<pre class="src src-emacs-lisp">
+(defun aw-flycheck-error-message-at-point ()
   (car (delq nil
 	     (mapcar
 	      (lambda (o) (and (overlay-get o 'flycheck-overlay) (flycheck-error-message (overlay-get o 'flycheck-error))))
@@ -369,22 +481,21 @@ nicer.
 (setq-default header-line-format
 	      '((which-func-mode which-func-format)
 		(flycheck-mode (" " (:eval (aw-flycheck-error-message-at-point))))))
+
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-Appearance-ANSI.colors" class="outline-3">
-<h3 id="Appearance-ANSI.colors"><a id="sec-2-5" name="sec-2-5"></a><span class="section-number-3">2.5</span> ANSI colors</h3>
+<div id="outline-container-org32f257a" class="outline-3">
+<h3 id="Appearance-ANSI.colors"><a id="org32f257a"></a><span class="section-number-3">2.6</span> ANSI colors</h3>
 <div class="outline-text-3" id="text-Appearance-ANSI.colors">
-
 <p>
 With white background the default ANSI colors gets a bit too
 bright. Tune them down a bit.
 </p>
 
 <div class="org-src-container">
-
 <pre class="src src-emacs-lisp">(eval-after-load 'ansi-color
   '(progn
      (setq ansi-color-names-vector
@@ -398,12 +509,12 @@ bright. Tune them down a bit.
 </div>
 
 
-<div id="outline-container-yankmenu" class="outline-2">
-<h2 id="yankmenu"><a id="sec-3" name="sec-3"></a><span class="section-number-2">3</span> yankmenu</h2>
+<div id="outline-container-orgbd29f01" class="outline-2">
+<h2 id="yankmenu"><a id="orgbd29f01"></a><span class="section-number-2">3</span> yankmenu</h2>
 <div class="outline-text-2" id="text-yankmenu">
 <div class="org-src-container">
-
-<pre class="src src-emacs-lisp">;;
+<pre class="src src-emacs-lisp">
+;;
 ;; store symbol at point to killring
 ;;
 (defun aw-kill-ring-save-symbol ()
@@ -429,17 +540,18 @@ bright. Tune them down a bit.
   ""
   (interactive)
   (aw-popup-menu-at-point 'yank-menu))
+
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-woman" class="outline-2">
-<h2 id="woman"><a id="sec-4" name="sec-4"></a><span class="section-number-2">4</span> woman</h2>
+<div id="outline-container-org3f101da" class="outline-2">
+<h2 id="woman"><a id="org3f101da"></a><span class="section-number-2">4</span> woman</h2>
 <div class="outline-text-2" id="text-woman">
 <div class="org-src-container">
-
-<pre class="src src-emacs-lisp">;; Customizations for woman manual viewer
+<pre class="src src-emacs-lisp">
+;; Customizations for woman manual viewer
 
 (require 'woman)
 
@@ -496,33 +608,34 @@ bright. Tune them down a bit.
   (define-key woman-mode-map "h" 'aw-grab-includes-from-woman))
 
 (add-hook 'woman-mode-hook 'aw-woman-hook)
+
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-flycheck" class="outline-2">
-<h2 id="flycheck"><a id="sec-5" name="sec-5"></a><span class="section-number-2">5</span> flycheck</h2>
+<div id="outline-container-orgbbae50e" class="outline-2">
+<h2 id="flycheck"><a id="orgbbae50e"></a><span class="section-number-2">5</span> flycheck</h2>
 <div class="outline-text-2" id="text-flycheck">
 <div class="org-src-container">
+<pre class="src src-emacs-lisp">
+(add-hook 'after-init-hook #'global-flycheck-mode)
 
-<pre class="src src-emacs-lisp">(add-hook 'after-init-hook #'global-flycheck-mode)
+
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-key.bindings" class="outline-2">
-<h2 id="key.bindings"><a id="sec-6" name="sec-6"></a><span class="section-number-2">6</span> key-bindings</h2>
+<div id="outline-container-orgd34fb98" class="outline-2">
+<h2 id="key.bindings"><a id="orgd34fb98"></a><span class="section-number-2">6</span> key-bindings</h2>
 <div class="outline-text-2" id="text-key.bindings">
-
 <p>
 I've never understood the default goto-line keybinding, so I've put
 goto-line directly on M-g.
 </p>
 
 <div class="org-src-container">
-
 <pre class="src src-emacs-lisp">(global-set-key "\M-g" 'goto-line)
 </pre>
 </div>
@@ -534,7 +647,6 @@ level prefix "M-s t" as a prefix for tags stuff:
 </p>
 
 <div class="org-src-container">
-
 <pre class="src src-emacs-lisp">(global-set-key "\M-sts" 'tags-search)
 (global-set-key "\M-stf" 'aw-ido-find-tag)
 (global-set-key "\M-stv" 'visit-tags-file)
@@ -548,7 +660,6 @@ level prefix "M-s t" as a prefix for tags stuff:
 </p>
 
 <div class="org-src-container">
-
 <pre class="src src-emacs-lisp">(global-set-key "\M-." 'aw-ido-find-tag)
 </pre>
 </div>
@@ -556,8 +667,9 @@ level prefix "M-s t" as a prefix for tags stuff:
 
 
 <div class="org-src-container">
+<pre class="src src-emacs-lisp">
 
-<pre class="src src-emacs-lisp">; Adapted from andre, who probably borrowed it from someone else.
+; Adapted from andre, who probably borrowed it from someone else.
 (defun cut-or-kill ()
   "If the mark is active - kill region, otherwise backward-kill-word"
   (interactive)
@@ -566,6 +678,7 @@ level prefix "M-s t" as a prefix for tags stuff:
     (backward-kill-word 1)))
 
 (global-set-key "\C-w" 'cut-or-kill)
+
 </pre>
 </div>
 
@@ -576,7 +689,6 @@ mostly use apropos when coding elisp and want full apropos
 </p>
 
 <div class="org-src-container">
-
 <pre class="src src-emacs-lisp">(define-key help-map "a" 'apropos)
 </pre>
 </div>
@@ -588,27 +700,16 @@ elisp, and it is some kind of help, so stick it under C-h
 </p>
 
 <div class="org-src-container">
-
 <pre class="src src-emacs-lisp">(define-key help-map "x" 'describe-text-properties)
 </pre>
 </div>
-
-
-
-<div class="org-src-container">
-
-<pre class="src src-emacs-lisp">; C-x 5 l =&gt; create new "large" frame. A fullscreen frame with larger
-;            font is nice for pair-programming/review.
-(define-key ctl-x-5-map "l" 'aw-large-frame)
-</pre>
-</div>
 </div>
 
 
-<div id="outline-container-key.bindings-C.c..letter." class="outline-3">
-<h3 id="key.bindings-C.c..letter."><a id="sec-6-1" name="sec-6-1"></a><span class="section-number-3">6.1</span> C-c <i>letter</i></h3>
+
+<div id="outline-container-org240cd72" class="outline-3">
+<h3 id="key.bindings-C.c..letter."><a id="org240cd72"></a><span class="section-number-3">6.1</span> C-c <i>letter</i></h3>
 <div class="outline-text-3" id="text-key.bindings-C.c..letter.">
-
 <p>
 C-c <i>letter</i> bindings are free for users to define.
 This is how I define them.
@@ -616,8 +717,8 @@ This is how I define them.
 
 
 <div class="org-src-container">
-
-<pre class="src src-emacs-lisp">; "C-c w" =&gt; Add symbol under cursor to kill ring. When programming I
+<pre class="src src-emacs-lisp">
+; "C-c w" =&gt; Add symbol under cursor to kill ring. When programming I
 ;            often write a call to a new function that I need to write
 ;            before writing the actual function, and use this to get
 ;            the name into the key ring for easy paste when writing
@@ -655,19 +756,20 @@ This is how I define them.
     (message "Don't know about interesting buffers for this mode")))
 
 (global-set-key "\C-ci" 'aw-ensure-interesting-buffer-visible)
+
+
 </pre>
 </div>
 </div>
 </div>
 </div>
 
-<div id="outline-container-c.mode" class="outline-2">
-<h2 id="c.mode"><a id="sec-7" name="sec-7"></a><span class="section-number-2">7</span> c-mode</h2>
+<div id="outline-container-orgcb73abf" class="outline-2">
+<h2 id="c.mode"><a id="orgcb73abf"></a><span class="section-number-2">7</span> c-mode</h2>
 <div class="outline-text-2" id="text-c.mode">
-
 <div class="org-src-container">
-
-<pre class="src src-emacs-lisp">(defun aw-str-isprefixp (str prefix)
+<pre class="src src-emacs-lisp">
+(defun aw-str-isprefixp (str prefix)
   ""
   (let ((plen (length prefix)))
     (and (&gt;= (length str) plen)
@@ -747,24 +849,45 @@ This is how I define them.
 
 ; enable flyspell in C sources.
 (add-hook 'c-mode-hook 'flyspell-prog-mode t)
+
+
+</pre>
+</div>
+
+<p>
+Setup <code>hide-ifdef</code> mode to shadow code which is disabled by ifdefs.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">  (defun aw-c-setup-hideifdef ()
+    (setq hide-ifdef-shadow t)
+    (setq hide-ifdef-initially t)
+    (hide-ifdef-mode 1))
+
+  (add-hook 'c-mode-hook 'aw-c-setup-hideifdef)
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-flyspell" class="outline-2">
-<h2 id="flyspell"><a id="sec-8" name="sec-8"></a><span class="section-number-2">8</span> flyspell</h2>
+<div id="outline-container-orgeaf7f20" class="outline-2">
+<h2 id="flyspell"><a id="orgeaf7f20"></a><span class="section-number-2">8</span> flyspell</h2>
 <div class="outline-text-2" id="text-flyspell">
+<p>
+Enable spell checking in text-mode buffers
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(add-hook 'text-mode-hook 'flyspell-mode t)
+</pre>
+</div>
 
 <p>
 Make flyspell use wave underlines in emacs 24.3+.
 </p>
 
 <div class="org-src-container">
-
 <pre class="src src-emacs-lisp">(eval-after-load 'flyspell
-  '(when (or (&gt; emacs-major-version 24)
-            (and (= emacs-major-version 24) (&gt;= emacs-minor-version 3)))
+  '(progn
     (set-face-attribute 'flyspell-incorrect nil
                         :inherit nil
                         :underline '(:color "#cc0000" :style wave))
@@ -776,13 +899,13 @@ Make flyspell use wave underlines in emacs 24.3+.
 </div>
 </div>
 
-<div id="outline-container-shell" class="outline-2">
-<h2 id="shell"><a id="sec-9" name="sec-9"></a><span class="section-number-2">9</span> shell</h2>
+<div id="outline-container-org2007b12" class="outline-2">
+<h2 id="shell"><a id="org2007b12"></a><span class="section-number-2">9</span> shell</h2>
 <div class="outline-text-2" id="text-shell">
 </div>
 
-<div id="outline-container-shell-Directory.in.buffer.name" class="outline-3">
-<h3 id="shell-Directory.in.buffer.name"><a id="sec-9-1" name="sec-9-1"></a><span class="section-number-3">9.1</span> Directory in buffer name</h3>
+<div id="outline-container-orgab5c886" class="outline-3">
+<h3 id="shell-Directory.in.buffer.name"><a id="orgab5c886"></a><span class="section-number-3">9.1</span> Directory in buffer name</h3>
 <div class="outline-text-3" id="text-shell-Directory.in.buffer.name">
 <p>
 Use directory tracking to get the current directory in shell buffers
@@ -791,7 +914,6 @@ ido buffer switching.
 </p>
 
 <div class="org-src-container">
-
 <pre class="src src-emacs-lisp">(defun aw-directory-shell-buffer-name-mode-func (s)
   (rename-buffer (format "*shell[%s]*" (abbreviate-file-name (directory-file-name default-directory))) t))
 
@@ -810,15 +932,14 @@ ido buffer switching.
 </div>
 </div>
 
-<div id="outline-container-shell-Completion" class="outline-3">
-<h3 id="shell-Completion"><a id="sec-9-2" name="sec-9-2"></a><span class="section-number-3">9.2</span> Completion</h3>
+<div id="outline-container-org49fe7c1" class="outline-3">
+<h3 id="shell-Completion"><a id="org49fe7c1"></a><span class="section-number-3">9.2</span> Completion</h3>
 <div class="outline-text-3" id="text-shell-Completion">
 <p>
 When emacs-bash-completion is installed - enable it. Available as a
 packet and here: <a href="https://github.com/szermatt/emacs-bash-completion">https://github.com/szermatt/emacs-bash-completion</a>
 </p>
 <div class="org-src-container">
-
 <pre class="src src-emacs-lisp">(when (require 'bash-completion nil t)
   (bash-completion-setup))
 </pre>
@@ -827,17 +948,15 @@ packet and here: <a href="https://github.com/szermatt/emacs-bash-completion">htt
 </div>
 </div>
 
-<div id="outline-container-shell.script.mode" class="outline-2">
-<h2 id="shell.script.mode"><a id="sec-10" name="sec-10"></a><span class="section-number-2">10</span> shell script mode</h2>
+<div id="outline-container-orga6525cc" class="outline-2">
+<h2 id="shell.script.mode"><a id="orga6525cc"></a><span class="section-number-2">10</span> shell script mode</h2>
 <div class="outline-text-2" id="text-shell.script.mode">
-
 <p>
 Basic setup for indentation in buffers editing shell scripts. Notice
 sh-indent-comment to allow indentation of comment (only) lines.
 </p>
 
 <div class="org-src-container">
-
 <pre class="src src-emacs-lisp">(defun aw-setup-sh-mode ()
   (setq tab-width 8)
   (setq sh-indentation 8)
@@ -845,18 +964,18 @@ sh-indent-comment to allow indentation of comment (only) lines.
   (setq sh-indent-comment t))
 
 (add-hook 'sh-mode-hook 'aw-setup-sh-mode)
+
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-uniquify" class="outline-2">
-<h2 id="uniquify"><a id="sec-11" name="sec-11"></a><span class="section-number-2">11</span> uniquify</h2>
+<div id="outline-container-orgc092e9d" class="outline-2">
+<h2 id="uniquify"><a id="orgc092e9d"></a><span class="section-number-2">11</span> uniquify</h2>
 <div class="outline-text-2" id="text-uniquify">
-
 <div class="org-src-container">
-
-<pre class="src src-emacs-lisp">(require 'uniquify)
+<pre class="src src-emacs-lisp">
+(require 'uniquify)
 
 ; server/src/foo.c client/src/foo.c
 ; =&gt;
@@ -870,18 +989,18 @@ sh-indent-comment to allow indentation of comment (only) lines.
 
 ; Don't try to be clever on *buffers*
 (setq uniquify-ignore-buffers-re "^\\*")
+
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-python" class="outline-2">
-<h2 id="python"><a id="sec-12" name="sec-12"></a><span class="section-number-2">12</span> python</h2>
+<div id="outline-container-org4ef3f57" class="outline-2">
+<h2 id="python"><a id="org4ef3f57"></a><span class="section-number-2">12</span> python</h2>
 <div class="outline-text-2" id="text-python">
-
 <div class="org-src-container">
-
-<pre class="src src-emacs-lisp">(add-hook 'python-mode-hook 'flyspell-prog-mode t)
+<pre class="src src-emacs-lisp">
+(add-hook 'python-mode-hook 'flyspell-prog-mode t)
 
 ; waf's wscript files are python
 (add-to-list 'auto-mode-alist '("wscript" . python-mode))
@@ -974,15 +1093,18 @@ sh-indent-comment to allow indentation of comment (only) lines.
 	    (setq indent-line-function 'aw-py-docstr-indent-line-function)
 	    (setq fill-paragraph-function 'aw-py-docstr-fill-paragraph))
 	  t)
+
+
+
+
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-ido" class="outline-2">
-<h2 id="ido"><a id="sec-13" name="sec-13"></a><span class="section-number-2">13</span> ido</h2>
+<div id="outline-container-orgef91b00" class="outline-2">
+<h2 id="ido"><a id="orgef91b00"></a><span class="section-number-2">13</span> ido</h2>
 <div class="outline-text-2" id="text-ido">
-
 <p>
 ido is really nice for finding files and buffer switching
 </p>
@@ -995,8 +1117,9 @@ Don't keep state between emacs invocations
 </p>
 
 <div class="org-src-container">
+<pre class="src src-emacs-lisp">
+(setq ido-save-directory-list-file nil)
 
-<pre class="src src-emacs-lisp">(setq ido-save-directory-list-file nil)
 </pre>
 </div>
 
@@ -1005,9 +1128,10 @@ Load and enable ido
 </p>
 
 <div class="org-src-container">
-
-<pre class="src src-emacs-lisp">(require 'ido)
+<pre class="src src-emacs-lisp">
+(require 'ido)
 (ido-mode t)
+
 </pre>
 </div>
 
@@ -1016,8 +1140,9 @@ Make sure .pyx/.y/.l files comes before their C file friends.
 </p>
 
 <div class="org-src-container">
+<pre class="src src-emacs-lisp">
+(setq ido-file-extensions-order '(".pyx" ".y" ".l" t))
 
-<pre class="src src-emacs-lisp">(setq ido-file-extensions-order '(".pyx" ".y" ".l" t))
 </pre>
 </div>
 
@@ -1026,15 +1151,16 @@ Default is raise-frame, which most of the time is useless.
 </p>
 
 <div class="org-src-container">
+<pre class="src src-emacs-lisp">
+(setq ido-default-buffer-method 'selected-window)
 
-<pre class="src src-emacs-lisp">(setq ido-default-buffer-method 'selected-window)
 </pre>
 </div>
 
 
 <div class="org-src-container">
-
-<pre class="src src-emacs-lisp">(defun aw-ido-completing-read-with-default (prompt entries predicate)
+<pre class="src src-emacs-lisp">
+(defun aw-ido-completing-read-with-default (prompt entries predicate)
   (let* ((maybedft (find-tag-default))
 	 (compl (all-completions "" entries predicate))
 	 (dft (assoc-string maybedft compl)))
@@ -1046,22 +1172,24 @@ Default is raise-frame, which most of the time is useless.
 	    nil
 	    nil
 	    dft)))
+
 </pre>
 </div>
 
 <div class="org-src-container">
-
-<pre class="src src-emacs-lisp">(defun aw-ido-find-tag ()
+<pre class="src src-emacs-lisp">
+(defun aw-ido-find-tag ()
   (interactive)
   (find-tag (aw-ido-completing-read-with-default "Tag: " (tags-lazy-completion-table) nil)))
+
 </pre>
 </div>
 
 
 
 <div class="org-src-container">
-
-<pre class="src src-emacs-lisp">;; There are entries with negative indices (to force rescan), remove them.
+<pre class="src src-emacs-lisp">
+;; There are entries with negative indices (to force rescan), remove them.
 (defun aw-imenu-entry-valid-p (x)
   (if (number-or-marker-p (cdr x))
       (&lt; 0 (cdr x))
@@ -1071,27 +1199,28 @@ Default is raise-frame, which most of the time is useless.
   (interactive)
   (let ((imenu-auto-rescan t))
     (imenu (aw-ido-completing-read-with-default "Index item: " (imenu--make-index-alist) 'aw-imenu-entry-valid-p))))
+
 </pre>
 </div>
 
 <div class="org-src-container">
-
-<pre class="src src-emacs-lisp">(defun aw-ido-ucs-insert ()
+<pre class="src src-emacs-lisp">
+(defun aw-ido-ucs-insert ()
   (interactive)
   (ucs-insert (cdr (assoc-string (ido-completing-read "Insert: "
                                                       (all-completions "" (ucs-names))
                                                       nil
                                                       t)
                                  (ucs-names)))))
+
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-ediff" class="outline-2">
-<h2 id="ediff"><a id="sec-14" name="sec-14"></a><span class="section-number-2">14</span> ediff</h2>
+<div id="outline-container-org27f43c6" class="outline-2">
+<h2 id="ediff"><a id="org27f43c6"></a><span class="section-number-2">14</span> ediff</h2>
 <div class="outline-text-2" id="text-ediff">
-
 <p>
 vc-resolve-conflicts brings up ediff. Running a tiling window manager
 so can't have ediff do crazy stuff like open a separate frame.
@@ -1101,17 +1230,15 @@ so can't have ediff do crazy stuff like open a separate frame.
 </pre>
 </div>
 </div>
-<div id="outline-container-git" class="outline-2">
-<h2 id="git"><a id="sec-15" name="sec-15"></a><span class="section-number-2">15</span> git</h2>
+<div id="outline-container-orgb397e18" class="outline-2">
+<h2 id="git"><a id="orgb397e18"></a><span class="section-number-2">15</span> git</h2>
 <div class="outline-text-2" id="text-git">
 </div>
 
-<div id="outline-container-git-magit" class="outline-3">
-<h3 id="git-magit"><a id="sec-15-1" name="sec-15-1"></a><span class="section-number-3">15.1</span> magit</h3>
+<div id="outline-container-orge59855b" class="outline-3">
+<h3 id="git-magit"><a id="orge59855b"></a><span class="section-number-3">15.1</span> magit</h3>
 <div class="outline-text-3" id="text-git-magit">
-
 <div class="org-src-container">
-
 <pre class="src src-emacs-lisp">(setq magit-completing-read-function 'magit-ido-completing-read)
 (setq git-commit-summary-max-length 70)
 (setq magit-process-popup-time 0)
@@ -1122,16 +1249,14 @@ so can't have ediff do crazy stuff like open a separate frame.
 </div>
 
 
-<div id="outline-container-git-running.git.from.shell.buffers" class="outline-3">
-<h3 id="git-running.git.from.shell.buffers"><a id="sec-15-2" name="sec-15-2"></a><span class="section-number-3">15.2</span> running git from shell buffers</h3>
+<div id="outline-container-org7c20487" class="outline-3">
+<h3 id="git-running.git.from.shell.buffers"><a id="org7c20487"></a><span class="section-number-3">15.2</span> running git from shell buffers</h3>
 <div class="outline-text-3" id="text-git-running.git.from.shell.buffers">
-
 <p>
 Sometimes it is nice to run 'git' from with in a shell buffer.
 </p>
 
 <div class="org-src-container">
-
 <pre class="src src-emacs-lisp">(setenv "GIT_PAGER" "")
 (setenv "GIT_EDITOR" "emacsclient")
 </pre>
@@ -1141,12 +1266,10 @@ Sometimes it is nice to run 'git' from with in a shell buffer.
 
 
 
-<div id="outline-container-git-Fast.import" class="outline-3">
-<h3 id="git-Fast.import"><a id="sec-15-3" name="sec-15-3"></a><span class="section-number-3">15.3</span> Fast import</h3>
+<div id="outline-container-orgb2a910c" class="outline-3">
+<h3 id="git-Fast.import"><a id="orgb2a910c"></a><span class="section-number-3">15.3</span> Fast import</h3>
 <div class="outline-text-3" id="text-git-Fast.import">
-
 <div class="org-src-container">
-
 <pre class="src src-emacs-lisp">(defun aw-git-fast-import--insert-one-file (filalist)
   (let ((f (car filalist))
 	(rest (cdr filalist)))
@@ -1173,18 +1296,17 @@ Sometimes it is nice to run 'git' from with in a shell buffer.
     (aw-git-fast-import--insert-one-file filalist)
     (insert "done\n")
     (shell-command-on-region (point-min) (point-max) "git fast-import --quiet --date-format=now --done")))
+
 </pre>
 </div>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org" class="outline-2">
-<h2 id="org"><a id="sec-16" name="sec-16"></a><span class="section-number-2">16</span> org</h2>
+<div id="outline-container-org6bbc5fa" class="outline-2">
+<h2 id="org"><a id="org6bbc5fa"></a><span class="section-number-2">16</span> org</h2>
 <div class="outline-text-2" id="text-org">
-
 <div class="org-src-container">
-
 <pre class="src src-emacs-lisp">(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
 (add-hook 'org-mode-hook 'flyspell-prog-mode t)
 </pre>
@@ -1193,10 +1315,10 @@ Sometimes it is nice to run 'git' from with in a shell buffer.
 
 
 <div class="org-src-container">
-
 <pre class="src src-emacs-lisp">(setq org-src-preserve-indentation t)
 
 ; maybe it is org-edit-src-content-indentation that I'm looking for
+
 </pre>
 </div>
 
@@ -1206,10 +1328,9 @@ too (in addition to the default elisp).
 </p>
 
 <div class="org-src-container">
-
 <pre class="src src-emacs-lisp">(setq
  org-babel-load-languages
- '((sh . t)
+ '((shell . t)
    (python . t)
    (emacs-lisp . t)))
 </pre>
@@ -1219,33 +1340,30 @@ too (in addition to the default elisp).
 Syntax hilight. For exported code make sure htmlize package is installed.
 </p>
 <div class="org-src-container">
-
 <pre class="src src-emacs-lisp">(setq org-src-fontify-natively t)
 </pre>
 </div>
 </div>
 
-<div id="outline-container-org-Auto.byte.compile.after.tangling.to..el.file" class="outline-3">
-<h3 id="org-Auto.byte.compile.after.tangling.to..el.file"><a id="sec-16-1" name="sec-16-1"></a><span class="section-number-3">16.1</span> Auto byte compile after tangling to .el file</h3>
+<div id="outline-container-org404f8d6" class="outline-3">
+<h3 id="org-Auto.byte.compile.after.tangling.to..el.file"><a id="org404f8d6"></a><span class="section-number-3">16.1</span> Auto byte compile after tangling to .el file</h3>
 <div class="outline-text-3" id="text-org-Auto.byte.compile.after.tangling.to..el.file">
-
 <div class="org-src-container">
-
 <pre class="src src-emacs-lisp">  (defun aw-el-byte-compile-post-tangle ()
     (let ((fn (buffer-file-name)))
       (when (and fn (string-match-p "\\.el$" fn))
         (byte-compile-file fn))))
   
   (add-hook 'org-babel-post-tangle-hook 'aw-el-byte-compile-post-tangle)
+  
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org-Use.the.heading.path.as.CUSTOM.ID.for.export." class="outline-3">
-<h3 id="org-Use.the.heading.path.as.CUSTOM.ID.for.export."><a id="sec-16-2" name="sec-16-2"></a><span class="section-number-3">16.2</span> Use the heading-path as CUSTOM<sub>ID</sub> for export.</h3>
+<div id="outline-container-orgf1f813e" class="outline-3">
+<h3 id="org-Use.the.heading.path.as.CUSTOM.ID.for.export."><a id="orgf1f813e"></a><span class="section-number-3">16.2</span> Use the heading-path as CUSTOM<sub>ID</sub> for export.</h3>
 <div class="outline-text-3" id="text-org-Use.the.heading.path.as.CUSTOM.ID.for.export.">
-
 <p>
 This makes anchor links be based on the heading names instead of
 numbers. Which makes them fragile in a different way :)
@@ -1258,7 +1376,6 @@ buffer used for export).
 </p>
 
 <div class="org-src-container">
-
 <pre class="src src-emacs-lisp">  (defun aw-org-safe-path-one-safelify (a)
     (replace-regexp-in-string "[^a-zA-Z0-9]" "." (org-no-properties a)))
   (defun aw-org-safe-path ()
@@ -1277,15 +1394,15 @@ buffer used for export).
           (aw-org-set-custom-id)))))
 
   (add-hook 'org-export-before-parsing-hook 'aw-org-set-custom-id-everywhere)
+  
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org-init.el.in.org.git.export" class="outline-3">
-<h3 id="org-init.el.in.org.git.export"><a id="sec-16-3" name="sec-16-3"></a><span class="section-number-3">16.3</span> init.el in org git export</h3>
+<div id="outline-container-org2931b37" class="outline-3">
+<h3 id="org-init.el.in.org.git.export"><a id="org2931b37"></a><span class="section-number-3">16.3</span> init.el in org git export</h3>
 <div class="outline-text-3" id="text-org-init.el.in.org.git.export">
-
 <p>
 aw-org-tangle-and-export-to-git-branch creates a new commit on the export branch,
 containing two files: the org-file exported to html, and the orgfile
@@ -1294,7 +1411,6 @@ tangled into el.
 
 
 <div class="org-src-container">
-
 <pre class="src src-emacs-lisp">    (defun aw-find-tangle-dest-files ()
       (let ((blocks (org-babel-tangle-collect-blocks))
             res)
@@ -1328,12 +1444,10 @@ tangled into el.
 </div>
 </div>
 </div>
-<div id="outline-container-nxml" class="outline-2">
-<h2 id="nxml"><a id="sec-17" name="sec-17"></a><span class="section-number-2">17</span> nxml</h2>
+<div id="outline-container-org7e1452c" class="outline-2">
+<h2 id="nxml"><a id="org7e1452c"></a><span class="section-number-2">17</span> nxml</h2>
 <div class="outline-text-2" id="text-nxml">
-
 <div class="org-src-container">
-
 <pre class="src src-emacs-lisp">(defun aw-setup-nxml-mode ()
   (setq indent-tabs-mode nil)
   (setq nxml-child-indent 4))
@@ -1346,8 +1460,7 @@ tangled into el.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Anders Waldenborg</p>
-<p class="date">Created: 2016-10-25 tis 21:10</p>
-<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.1.50.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="date">Created: 2018-02-24 lör 19:15</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
