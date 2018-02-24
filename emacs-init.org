@@ -85,28 +85,59 @@ nicer.
 
 #+END_SRC
 
-** Large frame
+** Fonts
+
+Try to cleverly select font and size. Smaller size on laptop screen -
+larger size on large screen.
 
 #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
+(defun aw-font-if-exists (fontname)
+  ""
+  (when (find-font (font-spec :name fontname))
+    fontname))
 
+(defun aw-default-font-name ()
+  ""
+  (or
+   (aw-font-if-exists "InputMono Light")
+   (aw-font-if-exists "Input")
+   (aw-font-if-exists "Inconsolata")
+   (aw-font-if-exists "UbuntuMono")
+   "Mono"))
 
-(setq aw-default-font "InputMono Light-10")
+(defun aw-get-font-for-frame (frame)
+  "Return font with size based on how large the monitor is"
+  (let* ((screen-w-mm (nth 1 (assoc 'mm-size (frame-monitor-attributes frame))))
+	 (font-size (or (and screen-w-mm (> screen-w-mm 400) 12) 10)))
+    (format "%s-%d" (aw-default-font-name) font-size)))
 
-(set-frame-font aw-default-font t)
 (defun aw-new-frame-set-font-function (frame)
   ""
   (with-selected-frame frame
-    (set-frame-font aw-default-font nil)))
+    (set-frame-font (aw-get-font-for-frame frame))))
 (add-hook 'after-make-frame-functions 'aw-new-frame-set-font-function)
 
+#+END_SRC
+
+
+** Large frame
+
+Make it possible to open a new "large" frame. A fullscreen frame with
+larger font is nice for pair-programming/review.
+
+The keybinding =C-x 5 l= creates such frame.
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
 (defun aw-large-frame ()
-  "Create a new fullscreen frame with a larger font (for pair programming/review)"
+  "Create a new fullscreen frame with a larger font (for pair programming/review)."
   (interactive)
   (with-selected-frame (make-frame '((name . "Emacs Largefont frame")
 		       (window-system . x)))
-    (set-frame-font "UbuntuMono-18" t)
+    (set-frame-font (format "%s-18" (aw-default-font-name)) t)
     (set-frame-parameter nil 'fullscreen 'fullboth)
     (selected-frame)))
+
+(define-key ctl-x-5-map "l" 'aw-large-frame)
 
 #+END_SRC
 
@@ -307,13 +338,6 @@ elisp, and it is some kind of help, so stick it under C-h
 (define-key help-map "x" 'describe-text-properties)
 #+END_SRC
 
-
-
-#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
-; C-x 5 l => create new "large" frame. A fullscreen frame with larger
-;            font is nice for pair-programming/review.
-(define-key ctl-x-5-map "l" 'aw-large-frame)
-#+END_SRC
 
 
 ** C-c /letter/
