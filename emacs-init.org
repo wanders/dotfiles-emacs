@@ -478,6 +478,17 @@ This is how I define them.
 
 #+END_SRC
 
+Setup =hide-ifdef= mode to shadow code which is disabled by ifdefs.
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
+  (defun aw-c-setup-hideifdef ()
+    (setq hide-ifdef-shadow t)
+    (setq hide-ifdef-initially t)
+    (hide-ifdef-mode 1))
+
+  (add-hook 'c-mode-hook 'aw-c-setup-hideifdef)
+#+END_SRC
+
 * flyspell
 
 Enable spell checking in text-mode buffers
