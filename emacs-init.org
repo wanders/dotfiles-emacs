@@ -834,7 +834,7 @@ too (in addition to the default elisp).
 #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
 (setq
  org-babel-load-languages
- '((sh . t)
+ '((shell . t)
    (python . t)
    (emacs-lisp . t)))
 #+END_SRC
