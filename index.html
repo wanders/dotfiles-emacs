@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-02-24 lör 19:15 -->
+<!-- 2018-02-24 lör 19:20 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Anders Waldenborg's emacs config</title>
@@ -179,6 +179,12 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
+<link rel="stylesheet" type="text/css" href="http://www.pirilampo.org/styles/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="http://www.pirilampo.org/styles/readtheorg/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://www.pirilampo.org/styles/lib/js/jquery.stickytableheaders.js"></script>
+<script type="text/javascript" src="http://www.pirilampo.org/styles/readtheorg/js/readtheorg.js"></script>
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -290,8 +296,8 @@ for the JavaScript code in this tag.
 </p>
 
 
-<div id="outline-container-orgaf56e88" class="outline-2">
-<h2 id="Packages"><a id="orgaf56e88"></a><span class="section-number-2">1</span> Packages</h2>
+<div id="outline-container-orgcc0d30b" class="outline-2">
+<h2 id="Packages"><a id="orgcc0d30b"></a><span class="section-number-2">1</span> Packages</h2>
 <div class="outline-text-2" id="text-Packages">
 <p>
 Initialize package system and add the marmalade and melpa package
@@ -314,13 +320,13 @@ we go.
 </div>
 </div>
 
-<div id="outline-container-org0f7d497" class="outline-2">
-<h2 id="Appearance"><a id="org0f7d497"></a><span class="section-number-2">2</span> Appearance</h2>
+<div id="outline-container-org97c684a" class="outline-2">
+<h2 id="Appearance"><a id="org97c684a"></a><span class="section-number-2">2</span> Appearance</h2>
 <div class="outline-text-2" id="text-Appearance">
 </div>
 
-<div id="outline-container-org7502503" class="outline-3">
-<h3 id="Appearance-Remove.stuff.from.the.UI."><a id="org7502503"></a><span class="section-number-3">2.1</span> Remove stuff from the UI.</h3>
+<div id="outline-container-org72263a0" class="outline-3">
+<h3 id="Appearance-Remove.stuff.from.the.UI."><a id="org72263a0"></a><span class="section-number-3">2.1</span> Remove stuff from the UI.</h3>
 <div class="outline-text-3" id="text-Appearance-Remove.stuff.from.the.UI.">
 <p>
 By default emacs has lots of useless UI elements, remove them to give
@@ -349,8 +355,8 @@ buffer boundaries in the left fringe.
 </div>
 </div>
 
-<div id="outline-container-org2d7b298" class="outline-3">
-<h3 id="Appearance-Show.matching.parens"><a id="org2d7b298"></a><span class="section-number-3">2.2</span> Show matching parens</h3>
+<div id="outline-container-org0728317" class="outline-3">
+<h3 id="Appearance-Show.matching.parens"><a id="org0728317"></a><span class="section-number-3">2.2</span> Show matching parens</h3>
 <div class="outline-text-3" id="text-Appearance-Show.matching.parens">
 <p>
 Showing matching parentheses is nice. Having the whole expression
@@ -394,8 +400,8 @@ nicer.
 </div>
 </div>
 
-<div id="outline-container-org799831d" class="outline-3">
-<h3 id="Appearance-Fonts"><a id="org799831d"></a><span class="section-number-3">2.3</span> Fonts</h3>
+<div id="outline-container-org6dc1976" class="outline-3">
+<h3 id="Appearance-Fonts"><a id="org6dc1976"></a><span class="section-number-3">2.3</span> Fonts</h3>
 <div class="outline-text-3" id="text-Appearance-Fonts">
 <p>
 Try to cleverly select font and size. Smaller size on laptop screen -
@@ -435,8 +441,8 @@ larger size on large screen.
 </div>
 
 
-<div id="outline-container-org7da84c0" class="outline-3">
-<h3 id="Appearance-Large.frame"><a id="org7da84c0"></a><span class="section-number-3">2.4</span> Large frame</h3>
+<div id="outline-container-org712ba18" class="outline-3">
+<h3 id="Appearance-Large.frame"><a id="org712ba18"></a><span class="section-number-3">2.4</span> Large frame</h3>
 <div class="outline-text-3" id="text-Appearance-Large.frame">
 <p>
 Make it possible to open a new "large" frame. A fullscreen frame with
@@ -464,8 +470,8 @@ The keybinding <code>C-x 5 l</code> creates such frame.
 </div>
 </div>
 
-<div id="outline-container-orgaf0f3de" class="outline-3">
-<h3 id="Appearance-Header.line"><a id="orgaf0f3de"></a><span class="section-number-3">2.5</span> Header line</h3>
+<div id="outline-container-orgfa622be" class="outline-3">
+<h3 id="Appearance-Header.line"><a id="orgfa622be"></a><span class="section-number-3">2.5</span> Header line</h3>
 <div class="outline-text-3" id="text-Appearance-Header.line">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">
@@ -487,8 +493,8 @@ The keybinding <code>C-x 5 l</code> creates such frame.
 </div>
 </div>
 
-<div id="outline-container-org32f257a" class="outline-3">
-<h3 id="Appearance-ANSI.colors"><a id="org32f257a"></a><span class="section-number-3">2.6</span> ANSI colors</h3>
+<div id="outline-container-org4adf132" class="outline-3">
+<h3 id="Appearance-ANSI.colors"><a id="org4adf132"></a><span class="section-number-3">2.6</span> ANSI colors</h3>
 <div class="outline-text-3" id="text-Appearance-ANSI.colors">
 <p>
 With white background the default ANSI colors gets a bit too
@@ -509,8 +515,8 @@ bright. Tune them down a bit.
 </div>
 
 
-<div id="outline-container-orgbd29f01" class="outline-2">
-<h2 id="yankmenu"><a id="orgbd29f01"></a><span class="section-number-2">3</span> yankmenu</h2>
+<div id="outline-container-orga7777c3" class="outline-2">
+<h2 id="yankmenu"><a id="orga7777c3"></a><span class="section-number-2">3</span> yankmenu</h2>
 <div class="outline-text-2" id="text-yankmenu">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">
@@ -546,8 +552,8 @@ bright. Tune them down a bit.
 </div>
 </div>
 
-<div id="outline-container-org3f101da" class="outline-2">
-<h2 id="woman"><a id="org3f101da"></a><span class="section-number-2">4</span> woman</h2>
+<div id="outline-container-orge3c9814" class="outline-2">
+<h2 id="woman"><a id="orge3c9814"></a><span class="section-number-2">4</span> woman</h2>
 <div class="outline-text-2" id="text-woman">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">
@@ -614,8 +620,8 @@ bright. Tune them down a bit.
 </div>
 </div>
 
-<div id="outline-container-orgbbae50e" class="outline-2">
-<h2 id="flycheck"><a id="orgbbae50e"></a><span class="section-number-2">5</span> flycheck</h2>
+<div id="outline-container-org4797587" class="outline-2">
+<h2 id="flycheck"><a id="org4797587"></a><span class="section-number-2">5</span> flycheck</h2>
 <div class="outline-text-2" id="text-flycheck">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">
@@ -627,8 +633,8 @@ bright. Tune them down a bit.
 </div>
 </div>
 
-<div id="outline-container-orgd34fb98" class="outline-2">
-<h2 id="key.bindings"><a id="orgd34fb98"></a><span class="section-number-2">6</span> key-bindings</h2>
+<div id="outline-container-org3751501" class="outline-2">
+<h2 id="key.bindings"><a id="org3751501"></a><span class="section-number-2">6</span> key-bindings</h2>
 <div class="outline-text-2" id="text-key.bindings">
 <p>
 I've never understood the default goto-line keybinding, so I've put
@@ -707,8 +713,8 @@ elisp, and it is some kind of help, so stick it under C-h
 
 
 
-<div id="outline-container-org240cd72" class="outline-3">
-<h3 id="key.bindings-C.c..letter."><a id="org240cd72"></a><span class="section-number-3">6.1</span> C-c <i>letter</i></h3>
+<div id="outline-container-org2008c60" class="outline-3">
+<h3 id="key.bindings-C.c..letter."><a id="org2008c60"></a><span class="section-number-3">6.1</span> C-c <i>letter</i></h3>
 <div class="outline-text-3" id="text-key.bindings-C.c..letter.">
 <p>
 C-c <i>letter</i> bindings are free for users to define.
@@ -764,8 +770,8 @@ This is how I define them.
 </div>
 </div>
 
-<div id="outline-container-orgcb73abf" class="outline-2">
-<h2 id="c.mode"><a id="orgcb73abf"></a><span class="section-number-2">7</span> c-mode</h2>
+<div id="outline-container-org78bd696" class="outline-2">
+<h2 id="c.mode"><a id="org78bd696"></a><span class="section-number-2">7</span> c-mode</h2>
 <div class="outline-text-2" id="text-c.mode">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">
@@ -870,8 +876,8 @@ Setup <code>hide-ifdef</code> mode to shadow code which is disabled by ifdefs.
 </div>
 </div>
 
-<div id="outline-container-orgeaf7f20" class="outline-2">
-<h2 id="flyspell"><a id="orgeaf7f20"></a><span class="section-number-2">8</span> flyspell</h2>
+<div id="outline-container-org205d559" class="outline-2">
+<h2 id="flyspell"><a id="org205d559"></a><span class="section-number-2">8</span> flyspell</h2>
 <div class="outline-text-2" id="text-flyspell">
 <p>
 Enable spell checking in text-mode buffers
@@ -899,13 +905,13 @@ Make flyspell use wave underlines in emacs 24.3+.
 </div>
 </div>
 
-<div id="outline-container-org2007b12" class="outline-2">
-<h2 id="shell"><a id="org2007b12"></a><span class="section-number-2">9</span> shell</h2>
+<div id="outline-container-org8a06708" class="outline-2">
+<h2 id="shell"><a id="org8a06708"></a><span class="section-number-2">9</span> shell</h2>
 <div class="outline-text-2" id="text-shell">
 </div>
 
-<div id="outline-container-orgab5c886" class="outline-3">
-<h3 id="shell-Directory.in.buffer.name"><a id="orgab5c886"></a><span class="section-number-3">9.1</span> Directory in buffer name</h3>
+<div id="outline-container-org3a97b9d" class="outline-3">
+<h3 id="shell-Directory.in.buffer.name"><a id="org3a97b9d"></a><span class="section-number-3">9.1</span> Directory in buffer name</h3>
 <div class="outline-text-3" id="text-shell-Directory.in.buffer.name">
 <p>
 Use directory tracking to get the current directory in shell buffers
@@ -932,8 +938,8 @@ ido buffer switching.
 </div>
 </div>
 
-<div id="outline-container-org49fe7c1" class="outline-3">
-<h3 id="shell-Completion"><a id="org49fe7c1"></a><span class="section-number-3">9.2</span> Completion</h3>
+<div id="outline-container-org7caf01d" class="outline-3">
+<h3 id="shell-Completion"><a id="org7caf01d"></a><span class="section-number-3">9.2</span> Completion</h3>
 <div class="outline-text-3" id="text-shell-Completion">
 <p>
 When emacs-bash-completion is installed - enable it. Available as a
@@ -948,8 +954,8 @@ packet and here: <a href="https://github.com/szermatt/emacs-bash-completion">htt
 </div>
 </div>
 
-<div id="outline-container-orga6525cc" class="outline-2">
-<h2 id="shell.script.mode"><a id="orga6525cc"></a><span class="section-number-2">10</span> shell script mode</h2>
+<div id="outline-container-orgfb02f61" class="outline-2">
+<h2 id="shell.script.mode"><a id="orgfb02f61"></a><span class="section-number-2">10</span> shell script mode</h2>
 <div class="outline-text-2" id="text-shell.script.mode">
 <p>
 Basic setup for indentation in buffers editing shell scripts. Notice
@@ -970,8 +976,8 @@ sh-indent-comment to allow indentation of comment (only) lines.
 </div>
 </div>
 
-<div id="outline-container-orgc092e9d" class="outline-2">
-<h2 id="uniquify"><a id="orgc092e9d"></a><span class="section-number-2">11</span> uniquify</h2>
+<div id="outline-container-orgb4e592f" class="outline-2">
+<h2 id="uniquify"><a id="orgb4e592f"></a><span class="section-number-2">11</span> uniquify</h2>
 <div class="outline-text-2" id="text-uniquify">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">
@@ -995,8 +1001,8 @@ sh-indent-comment to allow indentation of comment (only) lines.
 </div>
 </div>
 
-<div id="outline-container-org4ef3f57" class="outline-2">
-<h2 id="python"><a id="org4ef3f57"></a><span class="section-number-2">12</span> python</h2>
+<div id="outline-container-org1c75dff" class="outline-2">
+<h2 id="python"><a id="org1c75dff"></a><span class="section-number-2">12</span> python</h2>
 <div class="outline-text-2" id="text-python">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">
@@ -1102,8 +1108,8 @@ sh-indent-comment to allow indentation of comment (only) lines.
 </div>
 </div>
 
-<div id="outline-container-orgef91b00" class="outline-2">
-<h2 id="ido"><a id="orgef91b00"></a><span class="section-number-2">13</span> ido</h2>
+<div id="outline-container-org4fa4a9b" class="outline-2">
+<h2 id="ido"><a id="org4fa4a9b"></a><span class="section-number-2">13</span> ido</h2>
 <div class="outline-text-2" id="text-ido">
 <p>
 ido is really nice for finding files and buffer switching
@@ -1218,8 +1224,8 @@ Default is raise-frame, which most of the time is useless.
 </div>
 </div>
 
-<div id="outline-container-org27f43c6" class="outline-2">
-<h2 id="ediff"><a id="org27f43c6"></a><span class="section-number-2">14</span> ediff</h2>
+<div id="outline-container-orga4ad3a7" class="outline-2">
+<h2 id="ediff"><a id="orga4ad3a7"></a><span class="section-number-2">14</span> ediff</h2>
 <div class="outline-text-2" id="text-ediff">
 <p>
 vc-resolve-conflicts brings up ediff. Running a tiling window manager
@@ -1230,13 +1236,13 @@ so can't have ediff do crazy stuff like open a separate frame.
 </pre>
 </div>
 </div>
-<div id="outline-container-orgb397e18" class="outline-2">
-<h2 id="git"><a id="orgb397e18"></a><span class="section-number-2">15</span> git</h2>
+<div id="outline-container-orgcf2acbc" class="outline-2">
+<h2 id="git"><a id="orgcf2acbc"></a><span class="section-number-2">15</span> git</h2>
 <div class="outline-text-2" id="text-git">
 </div>
 
-<div id="outline-container-orge59855b" class="outline-3">
-<h3 id="git-magit"><a id="orge59855b"></a><span class="section-number-3">15.1</span> magit</h3>
+<div id="outline-container-org837a618" class="outline-3">
+<h3 id="git-magit"><a id="org837a618"></a><span class="section-number-3">15.1</span> magit</h3>
 <div class="outline-text-3" id="text-git-magit">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(setq magit-completing-read-function 'magit-ido-completing-read)
@@ -1249,8 +1255,8 @@ so can't have ediff do crazy stuff like open a separate frame.
 </div>
 
 
-<div id="outline-container-org7c20487" class="outline-3">
-<h3 id="git-running.git.from.shell.buffers"><a id="org7c20487"></a><span class="section-number-3">15.2</span> running git from shell buffers</h3>
+<div id="outline-container-org8e0d63f" class="outline-3">
+<h3 id="git-running.git.from.shell.buffers"><a id="org8e0d63f"></a><span class="section-number-3">15.2</span> running git from shell buffers</h3>
 <div class="outline-text-3" id="text-git-running.git.from.shell.buffers">
 <p>
 Sometimes it is nice to run 'git' from with in a shell buffer.
@@ -1266,8 +1272,8 @@ Sometimes it is nice to run 'git' from with in a shell buffer.
 
 
 
-<div id="outline-container-orgb2a910c" class="outline-3">
-<h3 id="git-Fast.import"><a id="orgb2a910c"></a><span class="section-number-3">15.3</span> Fast import</h3>
+<div id="outline-container-org7262249" class="outline-3">
+<h3 id="git-Fast.import"><a id="org7262249"></a><span class="section-number-3">15.3</span> Fast import</h3>
 <div class="outline-text-3" id="text-git-Fast.import">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(defun aw-git-fast-import--insert-one-file (filalist)
@@ -1303,8 +1309,8 @@ Sometimes it is nice to run 'git' from with in a shell buffer.
 </div>
 </div>
 
-<div id="outline-container-org6bbc5fa" class="outline-2">
-<h2 id="org"><a id="org6bbc5fa"></a><span class="section-number-2">16</span> org</h2>
+<div id="outline-container-orge617bb8" class="outline-2">
+<h2 id="org"><a id="orge617bb8"></a><span class="section-number-2">16</span> org</h2>
 <div class="outline-text-2" id="text-org">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
@@ -1345,8 +1351,8 @@ Syntax hilight. For exported code make sure htmlize package is installed.
 </div>
 </div>
 
-<div id="outline-container-org404f8d6" class="outline-3">
-<h3 id="org-Auto.byte.compile.after.tangling.to..el.file"><a id="org404f8d6"></a><span class="section-number-3">16.1</span> Auto byte compile after tangling to .el file</h3>
+<div id="outline-container-org9edbdcd" class="outline-3">
+<h3 id="org-Auto.byte.compile.after.tangling.to..el.file"><a id="org9edbdcd"></a><span class="section-number-3">16.1</span> Auto byte compile after tangling to .el file</h3>
 <div class="outline-text-3" id="text-org-Auto.byte.compile.after.tangling.to..el.file">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">  (defun aw-el-byte-compile-post-tangle ()
@@ -1361,8 +1367,8 @@ Syntax hilight. For exported code make sure htmlize package is installed.
 </div>
 </div>
 
-<div id="outline-container-orgf1f813e" class="outline-3">
-<h3 id="org-Use.the.heading.path.as.CUSTOM.ID.for.export."><a id="orgf1f813e"></a><span class="section-number-3">16.2</span> Use the heading-path as CUSTOM<sub>ID</sub> for export.</h3>
+<div id="outline-container-org89a74b3" class="outline-3">
+<h3 id="org-Use.the.heading.path.as.CUSTOM.ID.for.export."><a id="org89a74b3"></a><span class="section-number-3">16.2</span> Use the heading-path as CUSTOM<sub>ID</sub> for export.</h3>
 <div class="outline-text-3" id="text-org-Use.the.heading.path.as.CUSTOM.ID.for.export.">
 <p>
 This makes anchor links be based on the heading names instead of
@@ -1400,8 +1406,8 @@ buffer used for export).
 </div>
 </div>
 
-<div id="outline-container-org2931b37" class="outline-3">
-<h3 id="org-init.el.in.org.git.export"><a id="org2931b37"></a><span class="section-number-3">16.3</span> init.el in org git export</h3>
+<div id="outline-container-orgd3a17a7" class="outline-3">
+<h3 id="org-init.el.in.org.git.export"><a id="orgd3a17a7"></a><span class="section-number-3">16.3</span> init.el in org git export</h3>
 <div class="outline-text-3" id="text-org-init.el.in.org.git.export">
 <p>
 aw-org-tangle-and-export-to-git-branch creates a new commit on the export branch,
@@ -1444,8 +1450,8 @@ tangled into el.
 </div>
 </div>
 </div>
-<div id="outline-container-org7e1452c" class="outline-2">
-<h2 id="nxml"><a id="org7e1452c"></a><span class="section-number-2">17</span> nxml</h2>
+<div id="outline-container-org0cd0d0a" class="outline-2">
+<h2 id="nxml"><a id="org0cd0d0a"></a><span class="section-number-2">17</span> nxml</h2>
 <div class="outline-text-2" id="text-nxml">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(defun aw-setup-nxml-mode ()
@@ -1460,7 +1466,7 @@ tangled into el.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Anders Waldenborg</p>
-<p class="date">Created: 2018-02-24 lör 19:15</p>
+<p class="date">Created: 2018-02-24 lör 19:20</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
