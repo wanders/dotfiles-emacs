@@ -18,18 +18,12 @@
 
 * Packages
 
-Initialize package system and add the marmalade and melpa package
-repositories. This snippet comes from http://irreal.org/blog/?p=923
-
-Rumor has that it should be the very first thing in init.el, so here
-we go.
-
+Add melpa package repository.
 #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
-  (package-initialize)
-  (add-to-list 'package-archives
-               '("marmalade" . "https://marmalade-repo.org/packages/"))
-  (add-to-list 'package-archives
-               '("melpa" . "https://stable-melpa.org/packages/"))
+  (when (< emacs-major-version 27)
+    (package-initialize))
+
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 #+END_SRC
 
 * Appearance
