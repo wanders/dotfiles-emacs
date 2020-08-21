@@ -768,11 +768,11 @@ Default is raise-frame, which most of the time is useless.
 
 (defun aw-ido-ucs-insert ()
   (interactive)
-  (ucs-insert (cdr (assoc-string (ido-completing-read "Insert: "
-                                                      (all-completions "" (ucs-names))
-                                                      nil
-                                                      t)
-                                 (ucs-names)))))
+  (insert-char (gethash (ido-completing-read "Insert: "
+					     (all-completions "" (ucs-names))
+					     nil
+					     t)
+			(ucs-names))))
 
 #+END_SRC
 
