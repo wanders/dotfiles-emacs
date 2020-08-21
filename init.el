@@ -1,10 +1,9 @@
 ;; THIS FILE IS TANGLED FROM AN ORG FILE! DO NOT EDIT!
 
-  (package-initialize)
-  (add-to-list 'package-archives
-               '("marmalade" . "https://marmalade-repo.org/packages/"))
-  (add-to-list 'package-archives
-               '("melpa" . "https://stable-melpa.org/packages/"))
+  (when (< emacs-major-version 27)
+    (package-initialize))
+
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 
 (blink-cursor-mode 0)
 
@@ -32,6 +31,7 @@
 (setq mouse-yank-at-point t)
 
 (setq user-mail-address "anders@0x63.nu")
+(setq user-full-name "Anders Waldenborg")
 (setq inhibit-startup-screen t)
 (setq calendar-week-start-day 1)
 
@@ -80,7 +80,7 @@
 
 
 ;; headerline contains current function and flycheck error on current line
-(which-func-mode t)
+(which-function-mode t)
 (setq-default header-line-format
 	      '((which-func-mode which-func-format)
 		(flycheck-mode (" " (:eval (aw-flycheck-error-message-at-point))))))
@@ -203,6 +203,13 @@
 
 (define-key help-map "x" 'describe-text-properties)
 
+(defun aw-git-grep ()
+  (interactive)
+  (let ((re (grep-read-regexp)))
+    (vc-git-grep re "." (vc-git-root default-directory))))
+
+(global-set-key "\C-cf" 'aw-git-grep)
+
 ; "C-c w" => Add symbol under cursor to kill ring. When programming I
 ;            often write a call to a new function that I need to write
 ;            before writing the actual function, and use this to get
@@ -210,7 +217,6 @@
 ;            the actual function.
 (global-set-key "\C-cw" 'aw-kill-ring-save-symbol)
 (global-set-key "\C-cy" 'aw-yankmenu-popup)
-(global-set-key "\C-cn" 'flymake-goto-next-error)
 (global-set-key "\C-cd" 'dictionary-search)
 
 (global-set-key "\C-cg" 'aw-ido-imenu-goto)
@@ -514,11 +520,11 @@
 
 (defun aw-ido-ucs-insert ()
   (interactive)
-  (ucs-insert (cdr (assoc-string (ido-completing-read "Insert: "
-                                                      (all-completions "" (ucs-names))
-                                                      nil
-                                                      t)
-                                 (ucs-names)))))
+  (insert-char (gethash (ido-completing-read "Insert: "
+					     (all-completions "" (ucs-names))
+					     nil
+					     t)
+			(ucs-names))))
 
 (setq magit-completing-read-function 'magit-ido-completing-read)
 (setq git-commit-summary-max-length 70)
@@ -566,7 +572,17 @@
  org-babel-load-languages
  '((shell . t)
    (python . t)
+   (mscgen . t)
    (emacs-lisp . t)))
+
+(add-hook 'org-babel-after-execute-hook
+	  (lambda ()
+	    (org-display-inline-images nil t)
+	    (org-redisplay-inline-images)))
+
+(defun aw-org-confirm-babel-evaluate (lang body)
+  (not (string= lang "mscgen")))
+(setq org-confirm-babel-evaluate #'aw-org-confirm-babel-evaluate)
 
 (setq org-src-fontify-natively t)
 
@@ -630,3 +646,7 @@
   (setq nxml-child-indent 4))
 
 (add-hook 'nxml-mode-hook 'aw-setup-nxml-mode)
+
+(let ((path (expand-file-name "~/.emacs.d/local-config.el")))
+  (if (file-exists-p path)
+      (load-file path)))
