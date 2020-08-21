@@ -154,7 +154,7 @@ The keybinding =C-x 5 l= creates such frame.
 
 
 ;; headerline contains current function and flycheck error on current line
-(which-func-mode t)
+(which-function-mode t)
 (setq-default header-line-format
 	      '((which-func-mode which-func-format)
 		(flycheck-mode (" " (:eval (aw-flycheck-error-message-at-point))))))
