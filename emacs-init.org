@@ -870,7 +870,20 @@ too (in addition to the default elisp).
  org-babel-load-languages
  '((shell . t)
    (python . t)
+   (mscgen . t)
    (emacs-lisp . t)))
+#+END_SRC
+
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
+(add-hook 'org-babel-after-execute-hook
+	  (lambda ()
+	    (org-display-inline-images nil t)
+	    (org-redisplay-inline-images)))
+
+(defun aw-org-confirm-babel-evaluate (lang body)
+  (not (string= lang "mscgen")))
+(setq org-confirm-babel-evaluate #'aw-org-confirm-babel-evaluate)
 #+END_SRC
 
 Syntax hilight. For exported code make sure htmlize package is installed.
