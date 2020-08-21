@@ -980,3 +980,12 @@ tangled into el.
 
 (add-hook 'nxml-mode-hook 'aw-setup-nxml-mode)
 #+END_SRC
+* local config
+
+If there is a "local-config.el" file, load that.
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
+(let ((path (expand-file-name "~/.emacs.d/local-config.el")))
+  (if (file-exists-p path)
+      (load-file path)))
+#+END_SRC
