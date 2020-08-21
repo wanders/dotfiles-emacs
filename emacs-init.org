@@ -340,6 +340,15 @@ elisp, and it is some kind of help, so stick it under C-h
 #+END_SRC
 
 
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
+(defun aw-git-grep ()
+  (interactive)
+  (let ((re (grep-read-regexp)))
+    (vc-git-grep re "." (vc-git-root default-directory))))
+
+(global-set-key "\C-cf" 'aw-git-grep)
+#+END_SRC
+
 
 ** C-c /letter/
 
