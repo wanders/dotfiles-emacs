@@ -365,7 +365,6 @@ This is how I define them.
 ;            the actual function.
 (global-set-key "\C-cw" 'aw-kill-ring-save-symbol)
 (global-set-key "\C-cy" 'aw-yankmenu-popup)
-(global-set-key "\C-cn" 'flymake-goto-next-error)
 (global-set-key "\C-cd" 'dictionary-search)
 
 (global-set-key "\C-cg" 'aw-ido-imenu-goto)
